@@ -1,62 +1,43 @@
-# Memora 📚
+# Memora
 
-Aplicativo mobile de flashcards e repetição espaçada com foco em alto desempenho, leitura rápida e zero distrações visuais. Projetado com estética utilitária **OLED Dark-First** inspirada nas diretrizes do **Microsoft Fluent 2 Mobile**.
-
----
-
-## 🎯 Sobre o Projeto
-
-O **Memora** foi desenvolvido para concurseiros, estudantes universitários e de idiomas que precisam gerenciar altos volumes de estudo com rapidez e eficiência cognitiva:
-
-- **Estrutura Hierárquica em 2 Níveis**: Organize seus estudos por **Pastas** (ex: Concursos, OAB, Idiomas) e **Decks** de flashcards associados.
-- **Fluent 2 Mobile Design**: Superfícies escuras balanceadas com alto contraste (fundo `#000000`, cartões `#1F1F1F` e detalhes em cinza e azul `#479EF5`).
-- **Iconografia Oficial Fluent**: Utiliza a biblioteca oficial Microsoft Fluent UI System Icons (versões Regular para inativo e Filled para ativo).
-- **Sem Gamificação Excessiva**: Foco puro no estudo documental, contagem clara de pendências e revisões do dia.
-- **Criação Rápida**: Modal inferior (*Bottom Sheet*) integrado para criar pastas e decks instantaneamente pelo botão flutuante.
+Aplicativo mobile de flashcards e retenção de memória de alto rendimento, projetado para concurseiros, estudantes universitários e estudantes de idiomas. Desenvolvido para publicação na **Google Play Store**.
 
 ---
 
-## 🚀 Tecnologias
+## Visão Geral
 
-- **Framework**: [React Native](https://reactnative.dev/) / [Expo SDK 58](https://expo.dev/)
-- **Roteamento**: [Expo Router](https://docs.expo.dev/router/introduction/) (File-based routing)
-- **Linguagem**: [TypeScript](https://www.typescriptlang.org/)
-- **Tipografia**: [Inter Font](https://fonts.google.com/specimen/Inter) com `tabular-nums`
-- **Ícones**: SVG paths do Microsoft Fluent System Icons
-- **Estilização**: React Native StyleSheet nativo com design tokens estritos
+O **Memora** foi concebido com uma premissa clara: **máximo foco cognitivo e zero distrações visuais**. 
+
+Enquanto a maioria dos aplicativos do segmento aposta em interfaces poluídas e gamificação excessiva, o Memora adota uma abordagem estritamente utilitária e documental inspirada nas diretrizes de design do **Microsoft Fluent 2 Mobile**. A experiência é otimizada para sessões ágeis de estudo e repetição espaçada diretamente no smartphone.
 
 ---
 
-## 💻 Como Rodar o Projeto
+## Principais Recursos
 
-### Pré-requisitos
-- Node.js (v18+)
-- Expo Go instalado no smartphone (iOS ou Android)
-
-### Passo a passo
-
-1. **Clone o repositório:**
-   ```bash
-   git clone https://github.com/SEU_USUARIO/memora.git
-   cd memora
-   ```
-
-2. **Instale as dependências:**
-   ```bash
-   npm install
-   ```
-
-3. **Inicie o servidor de desenvolvimento:**
-   ```bash
-   npx expo start
-   ```
-
-4. **Abra no dispositivo:**
-   - Escaneie o QR Code exibido no terminal com o aplicativo **Expo Go** (Android) ou com a Câmera (iOS).
-   - Para abrir na Web, pressione `w` no terminal.
+- **Hierarquia Documental em 2 Níveis**: Organização por pastas temáticas (como OAB, Concursos, Medicina, Idiomas) e decks especializados em cada disciplina.
+- **Estética OLED Dark-First**: Construído sobre preto absoluto (`#000000`) e camadas de cinza de alta precisão luminosa, garantindo conforto visual prolongado e máxima economia de bateria em telas AMOLED/OLED.
+- **Iconografia Fluent UI**: Uso rigoroso de ícones do Microsoft Fluent System Icons, assegurando uma identidade profissional e familiar.
+- **Criação Ágil via Bottom Sheet**: Criação intuitiva e rápida de novas pastas e decks com categorização visual por ícones temáticos.
+- **Controle e Métricas de Revisão**: Painel focado nas pendências diárias e progresso de retenção por deck.
 
 ---
 
-## 📄 Licença
+## Roadmap de Desenvolvimento
 
-Este projeto está sob a licença MIT. Veja o arquivo [LICENSE](LICENSE) para mais detalhes.
+- [x] Arquitetura de Design System (Fluent 2 Mobile Dark)
+- [x] Estrutura de Pastas e Decks
+- [x] Interface de Criação Rápida (Bottom Sheet)
+- [ ] Motor de Repetição Espaçada (Spaced Repetition System)
+- [ ] Sessão de Estudo Ativo e Virada de Cartões
+- [ ] Estatísticas de Retenção e Curva de Esquecimento
+- [ ] Backup e Sincronização em Nuvem
+- [ ] Lançamento Oficial na **Google Play Store**
+
+---
+
+## Especificações
+
+- **Plataformas**: Android (Google Play Store) e iOS
+- **Design System**: Microsoft Fluent 2 Mobile (Dark Theme)
+- **Desenvolvimento**: luilma-dev
+- **Licença**: MIT
