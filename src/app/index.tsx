@@ -1126,8 +1126,6 @@ const styles = StyleSheet.create({
     borderRadius: 14,
     padding: 18,
     justifyContent: 'space-between',
-    borderWidth: 1,
-    borderColor: 'rgba(255, 255, 255, 0.06)',
     overflow: 'hidden',
     position: 'relative',
   },
@@ -1138,10 +1136,6 @@ const styles = StyleSheet.create({
     right: 26,
     width: 5,
     backgroundColor: '#191919',
-    borderLeftWidth: 1,
-    borderRightWidth: 1,
-    borderLeftColor: 'rgba(0, 0, 0, 0.06)',
-    borderRightColor: 'rgba(255, 255, 255, 0.02)',
   },
 
   /* ============================================================================
@@ -1159,8 +1153,6 @@ const styles = StyleSheet.create({
     borderRadius: 14,
     padding: 18,
     justifyContent: 'space-between',
-    borderWidth: 1,
-    borderColor: 'rgba(255, 255, 255, 0.05)',
   },
 
   /* Shared Minimalist Card Content Elements */
@@ -1230,12 +1222,9 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     justifyContent: 'center',
     gap: 8,
-    borderWidth: 1,
-    borderColor: 'rgba(255, 255, 255, 0.05)',
   },
   compactFolderChipActive: {
     backgroundColor: '#0F6CBD',
-    borderColor: '#0F6CBD',
   },
   compactFolderName: {
     fontFamily: DesignTokens.typography.fontFamily.semiBold,
@@ -1284,8 +1273,6 @@ const styles = StyleSheet.create({
     backgroundColor: DesignTokens.colors.bgCard,
     borderRadius: DesignTokens.radius.lg,
     padding: DesignTokens.spacing.space4,
-    borderWidth: 1,
-    borderColor: 'rgba(255, 255, 255, 0.06)',
     gap: 14,
   },
   reviewTopRow: {
@@ -1432,8 +1419,6 @@ const styles = StyleSheet.create({
     height: 88,
     borderRadius: 24,
     backgroundColor: '#1B1B1B',
-    borderWidth: 1,
-    borderColor: '#292929',
     alignItems: 'center',
     justifyContent: 'center',
     marginBottom: 20,
@@ -1499,10 +1484,6 @@ const styles = StyleSheet.create({
     backgroundColor: '#1E1E1E',
     borderTopLeftRadius: 24,
     borderTopRightRadius: 24,
-    borderTopWidth: 1,
-    borderLeftWidth: 1,
-    borderRightWidth: 1,
-    borderColor: '#2D2D2D',
     paddingHorizontal: 20,
     paddingTop: 12,
   },
@@ -1575,8 +1556,6 @@ const styles = StyleSheet.create({
   modalTextInput: {
     height: 48,
     backgroundColor: '#141414',
-    borderWidth: 1,
-    borderColor: '#2F2F2F',
     borderRadius: 12,
     paddingHorizontal: 16,
     fontFamily: DesignTokens.typography.fontFamily.regular,
@@ -1594,14 +1573,11 @@ const styles = StyleSheet.create({
     height: 48,
     borderRadius: 14,
     backgroundColor: '#161616',
-    borderWidth: 1,
-    borderColor: '#292929',
     alignItems: 'center',
     justifyContent: 'center',
   },
   iconSelectorPillSelected: {
     backgroundColor: DesignTokens.colors.accentPrimary,
-    borderColor: DesignTokens.colors.accentPrimary,
   },
   modalSubmitButton: {
     marginTop: 12,
@@ -1655,12 +1631,9 @@ const styles = StyleSheet.create({
     paddingVertical: 8,
     borderRadius: DesignTokens.radius.pill,
     backgroundColor: '#161616',
-    borderWidth: 1,
-    borderColor: '#292929',
   },
   parentFolderChipActive: {
     backgroundColor: DesignTokens.colors.accentPrimary,
-    borderColor: DesignTokens.colors.accentPrimary,
   },
   parentFolderChipText: {
     fontFamily: DesignTokens.typography.fontFamily.medium,
