@@ -7,14 +7,14 @@ export const DesignTokens = {
   colors: {
     // 2.1 Backgrounds & Surfaces (Fluent Dark Luminance Ladder)
     bgCanvas: '#000000',
-    bgNavSolid: '#3D3D3D',
-    bgNavTranslucent: 'rgba(61, 61, 61, 0.85)',
+    bgNavSolid: '#1D1D1D',
+    bgNavTranslucent: 'rgba(29, 29, 29, 0.85)',
     bgSheetCanvas: '#141414',
     bgDrawer: '#1F1F1F',
     bgSheetHeader: '#1F1F1F',
     bgCard: '#1F1F1F',
     bgSurfaceDisabled: '#222222',
-    bgHeader: '#3D3D3D',
+    bgHeader: '#1D1D1D',
     bgSettingsGroup: '#292929',
     bgSurfacePill: '#292929',
     bgCardOverlayBtn: 'rgba(41, 41, 41, 0.90)',

@@ -356,7 +356,7 @@ export default function StudyHomeScreen() {
 
   return (
     <View style={styles.screenRoot}>
-      {/* Top App Bar (#3D3D3D) */}
+      {/* Top App Bar (#1D1D1D) */}
       <View
         style={[
           styles.topHeaderSurface,
@@ -921,7 +921,7 @@ export default function StudyHomeScreen() {
         </KeyboardAvoidingView>
       </Modal>
 
-      {/* Bottom Tab Bar (#3D3D3D surface) */}
+      {/* Bottom Tab Bar (#1D1D1D surface) */}
       <View
         style={[
           styles.bottomTabBar,

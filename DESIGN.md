@@ -10,10 +10,10 @@ Este documento define o Design System oficial do aplicativo **Memora**. Toda a i
 2. **Zero Traçados / Bordas Artificiais (Stroke-Free Design - Regra Estrita)**: É proibido o uso de contornos, bordas ou traçados artificiais (`borderWidth: 1`, `border: 1px solid`, `outline`) para delinear cards, botões, modais, pílulas, inputs ou containers. A separação, hierarquia e profundidade visual são geradas exclusivamente pela **diferença tonal das superfícies (luminância)** sobre o fundo `#000000`. Elementos visuais se sustentam por suas formas e cores de preenchimento contínuas, garantindo um visual limpo, moderno e sem ruído visual.
 3. **Hierarquia por Escada de Luminância (Fluent Dark Elevation)**: A profundidade no modo Dark é comunicada pela progressão exata de cinzas, sem sombras pesadas nem traçados de contorno:
    * **Nível 0 (Main Canvas)**: `#000000` (Fundo principal OLED para listas, telas de estudo e feeds)
-   * **Nível 1 (Grouped Sheet Canvas)**: `#141414` (Fundo de telas modais e configurações)
+   * **Nível 1 (Top Header & Bottom Tab Bar)**: `#1D1D1D` (Superfície discreta do cabeçalho superior e da barra de navegação inferior)
    * **Nível 2 (Drawer, Modal Header & Card Surface)**: `#1F1F1F` (Menu lateral, cartões de decks, cards de pastas e superfície de modais)
    * **Nível 3 (Inset Groups, Pills & Icon Boxes)**: `#292929` (Pílulas inativas, caixas de ícones e blocos agrupados)
-   * **Nível 4 (Top Header & Bottom Tab Bar)**: `#3D3D3D` (Superfície elevada do cabeçalho superior e da barra de navegação inferior)
+   * **Nível 4 (Surface Hover & Controls)**: `#333333` (Estado pressionado e controles secundários)
 4. **Geometria Híbrida (Pills + Cards Arredondados)**: Controles interativos de navegação, busca, filtros, switches, avatares e ação flutuante utilizam formato pílula/circular (`border-radius: 9999px`), enquanto cards, grupos de configurações e caixas de ícones utilizam cantos arredondados suaves (`8px` a `14px`).
 5. **Acento Funcional Focado**: O azul primário (`#479EF5`) é reservado exclusivamente para indicar seleção ativa, switches ligados (`Toggle On`), botões de ação principal, botão flutuante (FAB) e aba ativa.
 
@@ -26,8 +26,8 @@ Este documento define o Design System oficial do aplicativo **Memora**. Toda a i
 | Token CSS | Hex / Valor | Função na Interface |
 | :--- | :--- | :--- |
 | `--bg-canvas` | `#000000` | Fundo principal da aplicação (canvas OLED de rolagem e estudo). |
-| `--bg-nav-solid` | `#3D3D3D` | Fundo sólido da barra de navegação inferior (Tab Bar) sobre o canvas preto. |
-| `--bg-header` | `#3D3D3D` | Superfície elevada do cabeçalho principal superior (App Bar). |
+| `--bg-nav-solid` | `#1D1D1D` | Fundo sólido da barra de navegação inferior (Tab Bar) sobre o canvas preto. |
+| `--bg-header` | `#1D1D1D` | Superfície do cabeçalho principal superior (App Bar). |
 | `--bg-sheet-canvas` | `#141414` | Fundo principal de telas modais e configurações. |
 | `--bg-drawer` | `#1F1F1F` | Superfície elevada da gaveta de navegação lateral. |
 | `--bg-sheet-header` | `#1F1F1F` | Superfície de folhas modais e sheets inferiores (*Bottom Sheets*). |
@@ -154,8 +154,8 @@ Este documento define o Design System oficial do aplicativo **Memora**. Toda a i
 
   /* Superfícies Sólidas (Zero Traçados / Escada de Luminância) */
   --bg-canvas: #000000;
-  --bg-nav-solid: #3D3D3D;
-  --bg-header: #3D3D3D;
+  --bg-nav-solid: #1D1D1D;
+  --bg-header: #1D1D1D;
   --bg-sheet-canvas: #141414;
   --bg-card: #1F1F1F;
   --bg-drawer: #1F1F1F;
