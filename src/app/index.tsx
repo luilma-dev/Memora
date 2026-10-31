@@ -23,7 +23,6 @@ import {
   BuildingBank24Filled,
   Checkmark12Filled,
   ChevronRight16Regular,
-  Dismiss24Regular,
   Folder24Filled,
   FolderAdd24Filled,
   HatGraduation24Filled,
@@ -806,14 +805,7 @@ export default function StudyHomeScreen() {
                 {getHeaderTitle()}
               </Text>
 
-              <Pressable
-                onPress={handleCloseCreate}
-                hitSlop={12}
-                accessibilityRole="button"
-                accessibilityLabel="Fechar"
-                style={({ pressed }) => [styles.floatingCloseBtn, pressed && styles.pressedOpacity]}>
-                <Dismiss24Regular size={20} color={DesignTokens.colors.textSecondary} />
-              </Pressable>
+              <View style={styles.floatingHeaderSpacer} />
             </View>
 
             {/* Floating Card Scrollable Body */}
@@ -881,7 +873,7 @@ export default function StudyHomeScreen() {
                       value={newFolderName}
                       onChangeText={setNewFolderName}
                       placeholder="Nome da pasta"
-                      placeholderTextColor="#707070"
+                      placeholderTextColor="#4A4A4E"
                       style={styles.floatingTextInput}
                       autoFocus
                       returnKeyType="next"
@@ -986,7 +978,7 @@ export default function StudyHomeScreen() {
                       value={newDeckTitle}
                       onChangeText={setNewDeckTitle}
                       placeholder="Título do deck"
-                      placeholderTextColor="#707070"
+                      placeholderTextColor="#4A4A4E"
                       style={styles.floatingTextInput}
                       autoFocus
                       returnKeyType="next"
@@ -1668,53 +1660,51 @@ const styles = StyleSheet.create({
     paddingVertical: 24,
   },
   floatingCardContainer: {
-    width: '100%',
-    maxWidth: 400,
+    width: '90%',
+    maxWidth: 350,
     maxHeight: '85%',
-    backgroundColor: '#141414',
-    borderRadius: 24,
+    backgroundColor: '#121214',
+    borderRadius: 28,
     overflow: 'hidden',
     shadowColor: '#000000',
     shadowOffset: { width: 0, height: 16 },
-    shadowOpacity: 0.6,
-    shadowRadius: 28,
-    elevation: 20,
+    shadowOpacity: 0.65,
+    shadowRadius: 30,
+    elevation: 24,
   },
   floatingCardHeader: {
-    height: 54,
-    backgroundColor: '#202020',
+    height: 56,
+    backgroundColor: '#262629',
     flexDirection: 'row',
     alignItems: 'center',
     justifyContent: 'space-between',
     paddingHorizontal: 16,
   },
   floatingHeaderBtn: {
-    minWidth: 64,
+    minWidth: 70,
     justifyContent: 'center',
   },
   floatingHeaderBtnText: {
     fontFamily: DesignTokens.typography.fontFamily.medium,
-    fontSize: 15,
-    color: DesignTokens.colors.accentPrimary,
+    fontSize: 17,
+    color: '#479EF5',
   },
   floatingCardTitle: {
     fontFamily: DesignTokens.typography.fontFamily.bold,
-    fontSize: 16,
-    color: DesignTokens.colors.textPrimary,
+    fontSize: 17,
+    color: '#FFFFFF',
     textAlign: 'center',
     flex: 1,
   },
-  floatingCloseBtn: {
-    minWidth: 40,
-    alignItems: 'flex-end',
-    justifyContent: 'center',
+  floatingHeaderSpacer: {
+    minWidth: 70,
   },
   floatingCardBody: {
-    backgroundColor: '#141414',
+    backgroundColor: '#121214',
   },
   floatingCardContent: {
     paddingHorizontal: 16,
-    paddingTop: 16,
+    paddingTop: 8,
     paddingBottom: 20,
   },
   floatingStepBlock: {
@@ -1744,7 +1734,7 @@ const styles = StyleSheet.create({
     width: 36,
     height: 36,
     borderRadius: 10,
-    backgroundColor: '#141414',
+    backgroundColor: '#121214',
     alignItems: 'center',
     justifyContent: 'center',
   },
@@ -1759,16 +1749,17 @@ const styles = StyleSheet.create({
     marginLeft: 54,
   },
   floatingInputCard: {
-    backgroundColor: '#1C1C1E',
-    borderRadius: 12,
-    overflow: 'hidden',
+    backgroundColor: 'transparent',
+    paddingHorizontal: 4,
+    paddingTop: 10,
+    paddingBottom: 2,
   },
   floatingTextInput: {
-    height: 52,
-    paddingHorizontal: 16,
+    height: 44,
     fontFamily: DesignTokens.typography.fontFamily.regular,
-    fontSize: 15,
+    fontSize: 17,
     color: '#FFFFFF',
+    paddingHorizontal: 0,
   },
   floatingIconGridCard: {
     backgroundColor: '#1C1C1E',
@@ -1783,7 +1774,7 @@ const styles = StyleSheet.create({
     width: 52,
     height: 52,
     borderRadius: 12,
-    backgroundColor: '#141414',
+    backgroundColor: '#121214',
     alignItems: 'center',
     justifyContent: 'center',
   },
@@ -1814,22 +1805,23 @@ const styles = StyleSheet.create({
     color: '#9E9E9E',
   },
   floatingPrimaryBtn: {
-    height: 48,
+    height: 50,
     borderRadius: DesignTokens.radius.pill,
     backgroundColor: DesignTokens.colors.accentPrimary,
     alignItems: 'center',
     justifyContent: 'center',
-    marginTop: 18,
+    marginTop: 14,
+    marginBottom: 4,
   },
   floatingPrimaryBtnDisabled: {
-    backgroundColor: '#1C1C1E',
+    backgroundColor: '#202023',
   },
   floatingPrimaryBtnText: {
     fontFamily: DesignTokens.typography.fontFamily.semiBold,
-    fontSize: 15,
+    fontSize: 16,
     color: DesignTokens.colors.textOnAccent,
   },
   floatingPrimaryBtnTextDisabled: {
-    color: '#666666',
+    color: '#55555A',
   },
 });
