@@ -1,4 +1,4 @@
-import React, { useRef, useState } from 'react';
+import React, { useState } from 'react';
 import {
   Animated,
   Easing,
@@ -249,7 +249,10 @@ export default function StudyHomeScreen() {
   const [newDeckIcon, setNewDeckIcon] = useState<StudyDeck['icon']>('scales');
   const [selectedParentFolderId, setSelectedParentFolderId] = useState<string>('');
   const [selectingOption, setSelectingOption] = useState<'folder' | 'deck' | null>(null);
-  const optionScaleAnim = useRef(new Animated.Value(1)).current;
+  const [iconPopAnim] = useState(() => new Animated.Value(1));
+  const [arrowGlideAnim] = useState(() => new Animated.Value(0));
+  const [textSlideAnim] = useState(() => new Animated.Value(0));
+  const [stepTransitionAnim] = useState(() => new Animated.Value(1));
 
   // Animated values
   const [decksHeaderAnim] = useState(() => new Animated.Value(0));
@@ -336,32 +339,91 @@ export default function StudyHomeScreen() {
   const handleSelectOption = (type: 'folder' | 'deck') => {
     if (selectingOption) return;
     setSelectingOption(type);
-    Animated.sequence([
-      Animated.timing(optionScaleAnim, {
-        toValue: 0.96,
-        duration: 70,
-        useNativeDriver: USE_NATIVE_DRIVER,
-      }),
-      Animated.spring(optionScaleAnim, {
-        toValue: 1,
-        friction: 4,
-        tension: 120,
-        useNativeDriver: USE_NATIVE_DRIVER,
-      }),
+
+    iconPopAnim.setValue(1);
+    arrowGlideAnim.setValue(0);
+    textSlideAnim.setValue(0);
+
+    Animated.parallel([
+      Animated.sequence([
+        Animated.timing(iconPopAnim, {
+          toValue: 1.25,
+          duration: 90,
+          easing: Easing.out(Easing.ease),
+          useNativeDriver: USE_NATIVE_DRIVER,
+        }),
+        Animated.spring(iconPopAnim, {
+          toValue: 1,
+          friction: 3,
+          tension: 120,
+          useNativeDriver: USE_NATIVE_DRIVER,
+        }),
+      ]),
+      Animated.sequence([
+        Animated.timing(arrowGlideAnim, {
+          toValue: 8,
+          duration: 100,
+          easing: Easing.out(Easing.ease),
+          useNativeDriver: USE_NATIVE_DRIVER,
+        }),
+        Animated.spring(arrowGlideAnim, {
+          toValue: 0,
+          friction: 4,
+          tension: 100,
+          useNativeDriver: USE_NATIVE_DRIVER,
+        }),
+      ]),
+      Animated.sequence([
+        Animated.timing(textSlideAnim, {
+          toValue: 4,
+          duration: 90,
+          easing: Easing.out(Easing.ease),
+          useNativeDriver: USE_NATIVE_DRIVER,
+        }),
+        Animated.spring(textSlideAnim, {
+          toValue: 0,
+          friction: 4,
+          tension: 120,
+          useNativeDriver: USE_NATIVE_DRIVER,
+        }),
+      ]),
     ]).start();
 
     setTimeout(() => {
-      LayoutAnimation.configureNext(LayoutAnimation.Presets.easeInEaseOut);
+      setSelectingOption(null);
+      stepTransitionAnim.setValue(0);
       setCreateType(type);
       setCreateStep(1);
-      setSelectingOption(null);
-    }, 160);
+      Animated.spring(stepTransitionAnim, {
+        toValue: 1,
+        tension: 70,
+        friction: 9,
+        useNativeDriver: USE_NATIVE_DRIVER,
+      }).start();
+    }, 200);
+  };
+
+  const handleAdvanceToStep = (nextStep: number) => {
+    stepTransitionAnim.setValue(0);
+    setCreateStep(nextStep);
+    Animated.spring(stepTransitionAnim, {
+      toValue: 1,
+      tension: 70,
+      friction: 9,
+      useNativeDriver: USE_NATIVE_DRIVER,
+    }).start();
   };
 
   const handleBackStep = () => {
-    LayoutAnimation.configureNext(LayoutAnimation.Presets.easeInEaseOut);
     if (createStep > 0) {
+      stepTransitionAnim.setValue(0);
       setCreateStep((prev) => prev - 1);
+      Animated.spring(stepTransitionAnim, {
+        toValue: 1,
+        tension: 70,
+        friction: 9,
+        useNativeDriver: USE_NATIVE_DRIVER,
+      }).start();
     } else {
       handleCloseCreate();
     }
@@ -864,27 +926,45 @@ export default function StudyHomeScreen() {
                       accessibilityRole="button"
                       accessibilityLabel="Nova Pasta">
                       {({ pressed }) => {
-                        const isActive = pressed || selectingOption === 'folder';
+                        const isSelected = selectingOption === 'folder';
+                        const isActive = pressed || isSelected;
                         const optionColor = isActive ? DesignTokens.colors.accentPrimary : '#9E9E9E';
-                        const chevronColor = isActive ? DesignTokens.colors.accentPrimary : '#666666';
 
                         return (
-                          <Animated.View
+                          <View
                             style={[
                               styles.floatingOptionRow,
-                              isActive && styles.floatingOptionRowPressed,
-                              selectingOption === 'folder' && {
-                                transform: [{ scale: optionScaleAnim }],
-                              },
+                              pressed && styles.floatingOptionRowPressed,
                             ]}>
                             <View style={styles.floatingOptionLeft}>
-                              <Folder24Regular size={28} color={optionColor} />
-                              <Text style={[styles.floatingOptionTitle, { color: optionColor }]}>
+                              <Animated.View
+                                style={
+                                  isSelected
+                                    ? { transform: [{ scale: iconPopAnim }] }
+                                    : undefined
+                                }>
+                                <Folder24Regular size={28} color={optionColor} />
+                              </Animated.View>
+                              <Animated.Text
+                                style={[
+                                  styles.floatingOptionTitle,
+                                  { color: optionColor },
+                                  isSelected
+                                    ? { transform: [{ translateX: textSlideAnim }] }
+                                    : undefined,
+                                ]}>
                                 Nova Pasta
-                              </Text>
+                              </Animated.Text>
                             </View>
-                            <ChevronRight16Regular size={20} color={chevronColor} />
-                          </Animated.View>
+                            <Animated.View
+                              style={
+                                isSelected
+                                  ? { transform: [{ translateX: arrowGlideAnim }] }
+                                  : undefined
+                              }>
+                              <ChevronRight16Regular size={20} color={optionColor} />
+                            </Animated.View>
+                          </View>
                         );
                       }}
                     </Pressable>
@@ -896,27 +976,45 @@ export default function StudyHomeScreen() {
                       accessibilityRole="button"
                       accessibilityLabel="Novo Deck">
                       {({ pressed }) => {
-                        const isActive = pressed || selectingOption === 'deck';
+                        const isSelected = selectingOption === 'deck';
+                        const isActive = pressed || isSelected;
                         const optionColor = isActive ? DesignTokens.colors.accentPrimary : '#9E9E9E';
-                        const chevronColor = isActive ? DesignTokens.colors.accentPrimary : '#666666';
 
                         return (
-                          <Animated.View
+                          <View
                             style={[
                               styles.floatingOptionRow,
-                              isActive && styles.floatingOptionRowPressed,
-                              selectingOption === 'deck' && {
-                                transform: [{ scale: optionScaleAnim }],
-                              },
+                              pressed && styles.floatingOptionRowPressed,
                             ]}>
                             <View style={styles.floatingOptionLeft}>
-                              <BookOpen24Regular size={28} color={optionColor} />
-                              <Text style={[styles.floatingOptionTitle, { color: optionColor }]}>
+                              <Animated.View
+                                style={
+                                  isSelected
+                                    ? { transform: [{ scale: iconPopAnim }] }
+                                    : undefined
+                                }>
+                                <BookOpen24Regular size={28} color={optionColor} />
+                              </Animated.View>
+                              <Animated.Text
+                                style={[
+                                  styles.floatingOptionTitle,
+                                  { color: optionColor },
+                                  isSelected
+                                    ? { transform: [{ translateX: textSlideAnim }] }
+                                    : undefined,
+                                ]}>
                                 Novo Deck
-                              </Text>
+                              </Animated.Text>
                             </View>
-                            <ChevronRight16Regular size={20} color={chevronColor} />
-                          </Animated.View>
+                            <Animated.View
+                              style={
+                                isSelected
+                                  ? { transform: [{ translateX: arrowGlideAnim }] }
+                                  : undefined
+                              }>
+                              <ChevronRight16Regular size={20} color={optionColor} />
+                            </Animated.View>
+                          </View>
                         );
                       }}
                     </Pressable>
@@ -926,7 +1024,21 @@ export default function StudyHomeScreen() {
 
               {/* Folder Flow */}
               {createType === 'folder' && createStep === 1 && (
-                <View style={styles.floatingStepBlock}>
+                <Animated.View
+                  style={[
+                    styles.floatingStepBlock,
+                    {
+                      opacity: stepTransitionAnim,
+                      transform: [
+                        {
+                          translateX: stepTransitionAnim.interpolate({
+                            inputRange: [0, 1],
+                            outputRange: [28, 0],
+                          }),
+                        },
+                      ],
+                    },
+                  ]}>
                   <View style={styles.floatingInputCard}>
                     <TextInput
                       value={newFolderName}
@@ -938,8 +1050,7 @@ export default function StudyHomeScreen() {
                       returnKeyType="next"
                       onSubmitEditing={() => {
                         if (newFolderName.trim()) {
-                          LayoutAnimation.configureNext(LayoutAnimation.Presets.easeInEaseOut);
-                          setCreateStep(2);
+                          handleAdvanceToStep(2);
                         }
                       }}
                     />
@@ -948,8 +1059,7 @@ export default function StudyHomeScreen() {
                   <Pressable
                     onPress={() => {
                       if (newFolderName.trim()) {
-                        LayoutAnimation.configureNext(LayoutAnimation.Presets.easeInEaseOut);
-                        setCreateStep(2);
+                        handleAdvanceToStep(2);
                       }
                     }}
                     disabled={!newFolderName.trim()}
@@ -968,7 +1078,7 @@ export default function StudyHomeScreen() {
                       Continuar
                     </Text>
                   </Pressable>
-                </View>
+                </Animated.View>
               )}
 
               {createType === 'folder' && createStep === 2 && (
@@ -1031,7 +1141,21 @@ export default function StudyHomeScreen() {
               )}
 
               {createType === 'deck' && folders.length > 0 && createStep === 1 && (
-                <View style={styles.floatingStepBlock}>
+                <Animated.View
+                  style={[
+                    styles.floatingStepBlock,
+                    {
+                      opacity: stepTransitionAnim,
+                      transform: [
+                        {
+                          translateX: stepTransitionAnim.interpolate({
+                            inputRange: [0, 1],
+                            outputRange: [28, 0],
+                          }),
+                        },
+                      ],
+                    },
+                  ]}>
                   <View style={styles.floatingInputCard}>
                     <TextInput
                       value={newDeckTitle}
@@ -1043,8 +1167,7 @@ export default function StudyHomeScreen() {
                       returnKeyType="next"
                       onSubmitEditing={() => {
                         if (newDeckTitle.trim()) {
-                          LayoutAnimation.configureNext(LayoutAnimation.Presets.easeInEaseOut);
-                          setCreateStep(2);
+                          handleAdvanceToStep(2);
                         }
                       }}
                     />
@@ -1053,8 +1176,7 @@ export default function StudyHomeScreen() {
                   <Pressable
                     onPress={() => {
                       if (newDeckTitle.trim()) {
-                        LayoutAnimation.configureNext(LayoutAnimation.Presets.easeInEaseOut);
-                        setCreateStep(2);
+                        handleAdvanceToStep(2);
                       }
                     }}
                     disabled={!newDeckTitle.trim()}
@@ -1073,7 +1195,7 @@ export default function StudyHomeScreen() {
                       Continuar
                     </Text>
                   </Pressable>
-                </View>
+                </Animated.View>
               )}
 
               {createType === 'deck' && folders.length > 0 && createStep === 2 && (
@@ -1786,7 +1908,7 @@ const styles = StyleSheet.create({
     justifyContent: 'space-between',
   },
   floatingOptionRowPressed: {
-    backgroundColor: 'rgba(71, 158, 245, 0.12)',
+    backgroundColor: '#1E1E22',
   },
   floatingOptionLeft: {
     flexDirection: 'row',
