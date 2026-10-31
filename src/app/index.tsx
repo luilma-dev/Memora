@@ -780,7 +780,11 @@ export default function StudyHomeScreen() {
             accessibilityLabel="Fechar janela"
           />
 
-          <View style={styles.floatingCardContainer}>
+          <View
+            style={[
+              styles.floatingCardContainer,
+              createStep === 0 && { backgroundColor: '#171717' },
+            ]}>
             {/* Top Bar of Floating Card */}
             <View style={styles.floatingCardHeader}>
               {createStep > 0 ? (
@@ -812,8 +816,14 @@ export default function StudyHomeScreen() {
 
             {/* Floating Card Scrollable Body */}
             <ScrollView
-              style={styles.floatingCardBody}
-              contentContainerStyle={styles.floatingCardContent}
+              style={[
+                styles.floatingCardBody,
+                createStep === 0 && { backgroundColor: '#171717' },
+              ]}
+              contentContainerStyle={[
+                styles.floatingCardContent,
+                createStep === 0 && { paddingBottom: 0 },
+              ]}
               keyboardShouldPersistTaps="handled"
               showsVerticalScrollIndicator={false}>
               {/* Step 0: Choice of Creation */}
@@ -1717,6 +1727,8 @@ const styles = StyleSheet.create({
     backgroundColor: '#171717',
     width: '100%',
     overflow: 'hidden',
+    borderBottomLeftRadius: 28,
+    borderBottomRightRadius: 28,
   },
   floatingOptionRow: {
     height: 56,
