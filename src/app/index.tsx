@@ -1717,7 +1717,7 @@ const styles = StyleSheet.create({
   floatingCardContent: {
     paddingHorizontal: 0,
     paddingTop: 0,
-    paddingBottom: 20,
+    paddingBottom: 10,
   },
   floatingStepBlock: {
     marginTop: 0,
@@ -1830,8 +1830,8 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     justifyContent: 'center',
     marginHorizontal: 20,
-    marginTop: 20,
-    marginBottom: 8,
+    marginTop: 14,
+    marginBottom: 0,
   },
   floatingPrimaryBtnDisabled: {
     backgroundColor: '#1A1A1A',
