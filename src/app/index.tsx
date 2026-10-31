@@ -496,7 +496,7 @@ export default function StudyHomeScreen() {
                 styles.emptyStateIconWrapper,
                 pressed && styles.pressedOpacity,
               ]}>
-              <FolderAdd24Filled size={72} color={DesignTokens.colors.accentPrimary} />
+              <FolderAdd24Filled size={92} color={DesignTokens.colors.accentPrimary} />
             </Pressable>
             <Text style={styles.emptyStateTitle}>Nenhuma pasta ainda</Text>
             <Text style={styles.emptyStateSubtitle}>
@@ -513,7 +513,7 @@ export default function StudyHomeScreen() {
                 styles.emptyStateActionButton,
                 pressed && styles.startReviewPillBtnPressed,
               ]}>
-              <AddCircle24Regular size={20} color={DesignTokens.colors.textOnAccent} />
+              <AddCircle24Regular size={24} color={DesignTokens.colors.textOnAccent} />
               <Text style={styles.emptyStateActionText}>Criar primeira pasta</Text>
             </Pressable>
           </View>
@@ -1530,46 +1530,46 @@ const styles = StyleSheet.create({
   /* Empty State */
   emptyStateContainer: {
     paddingHorizontal: 24,
-    paddingTop: 60,
-    paddingBottom: 40,
+    paddingTop: 72,
+    paddingBottom: 48,
     alignItems: 'center',
     justifyContent: 'center',
   },
   emptyStateIconWrapper: {
     alignItems: 'center',
     justifyContent: 'center',
-    marginBottom: 20,
+    marginBottom: 24,
   },
   emptyStateTitle: {
-    fontFamily: DesignTokens.typography.fontFamily.semiBold,
-    fontSize: 18,
-    lineHeight: 24,
+    fontFamily: DesignTokens.typography.fontFamily.bold,
+    fontSize: 22,
+    lineHeight: 28,
     color: DesignTokens.colors.textPrimary,
-    marginBottom: 8,
+    marginBottom: 10,
     textAlign: 'center',
   },
   emptyStateSubtitle: {
     fontFamily: DesignTokens.typography.fontFamily.regular,
-    fontSize: 14,
-    lineHeight: 20,
+    fontSize: 16,
+    lineHeight: 24,
     color: DesignTokens.colors.textSecondary,
     textAlign: 'center',
-    marginBottom: 24,
-    maxWidth: 290,
+    marginBottom: 32,
+    maxWidth: 330,
   },
   emptyStateActionButton: {
     flexDirection: 'row',
     alignItems: 'center',
-    gap: 8,
+    gap: 10,
     backgroundColor: DesignTokens.colors.accentPrimary,
-    paddingVertical: 12,
-    paddingHorizontal: 22,
+    paddingVertical: 14,
+    paddingHorizontal: 28,
     borderRadius: DesignTokens.radius.pill,
   },
   emptyStateActionText: {
     fontFamily: DesignTokens.typography.fontFamily.semiBold,
-    fontSize: 14,
-    lineHeight: 18,
+    fontSize: 16,
+    lineHeight: 20,
     color: DesignTokens.colors.textOnAccent,
   },
 
