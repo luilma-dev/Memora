@@ -844,11 +844,11 @@ export default function StudyHomeScreen() {
                       ]}>
                       <View style={styles.floatingOptionLeft}>
                         <View style={styles.floatingOptionIconCircle}>
-                          <Folder24Filled size={28} color={DesignTokens.colors.accentPrimary} />
+                          <Folder24Filled size={24} color={DesignTokens.colors.accentPrimary} />
                         </View>
                         <Text style={styles.floatingOptionTitle}>Nova Pasta</Text>
                       </View>
-                      <ChevronRight16Regular size={22} color={DesignTokens.colors.textSecondary} />
+                      <ChevronRight16Regular size={18} color={DesignTokens.colors.textSecondary} />
                     </Pressable>
 
                     <View style={styles.floatingDivider} />
@@ -867,11 +867,11 @@ export default function StudyHomeScreen() {
                       ]}>
                       <View style={styles.floatingOptionLeft}>
                         <View style={styles.floatingOptionIconCircle}>
-                          <BookOpen24Filled size={28} color={DesignTokens.colors.accentPrimary} />
+                          <BookOpen24Filled size={24} color={DesignTokens.colors.accentPrimary} />
                         </View>
                         <Text style={styles.floatingOptionTitle}>Novo Deck</Text>
                       </View>
-                      <ChevronRight16Regular size={22} color={DesignTokens.colors.textSecondary} />
+                      <ChevronRight16Regular size={18} color={DesignTokens.colors.textSecondary} />
                     </Pressable>
                   </View>
                 </View>
@@ -1672,11 +1672,11 @@ const styles = StyleSheet.create({
     paddingVertical: 24,
   },
   floatingCardContainer: {
-    width: '94%',
-    maxWidth: 420,
-    maxHeight: '88%',
+    width: '92%',
+    maxWidth: 390,
+    maxHeight: '85%',
     backgroundColor: '#121212',
-    borderRadius: 32,
+    borderRadius: 28,
     overflow: 'hidden',
     shadowColor: '#000000',
     shadowOffset: { width: 0, height: 16 },
@@ -1685,31 +1685,31 @@ const styles = StyleSheet.create({
     elevation: 24,
   },
   floatingCardHeader: {
-    height: 68,
+    height: 60,
     backgroundColor: '#262629',
     flexDirection: 'row',
     alignItems: 'center',
     justifyContent: 'space-between',
-    paddingHorizontal: 20,
+    paddingHorizontal: 18,
   },
   floatingHeaderBtn: {
-    minWidth: 80,
+    minWidth: 70,
     justifyContent: 'center',
   },
   floatingHeaderBtnText: {
     fontFamily: DesignTokens.typography.fontFamily.medium,
-    fontSize: 18,
+    fontSize: 17,
     color: '#479EF5',
   },
   floatingCardTitle: {
     fontFamily: DesignTokens.typography.fontFamily.bold,
-    fontSize: 20,
+    fontSize: 18,
     color: '#FFFFFF',
     textAlign: 'center',
     flex: 1,
   },
   floatingHeaderSpacer: {
-    minWidth: 80,
+    minWidth: 70,
   },
   floatingCardBody: {
     backgroundColor: '#121212',
@@ -1717,7 +1717,7 @@ const styles = StyleSheet.create({
   floatingCardContent: {
     paddingHorizontal: 0,
     paddingTop: 0,
-    paddingBottom: 10,
+    paddingBottom: 0,
   },
   floatingStepBlock: {
     marginTop: 0,
@@ -1727,12 +1727,12 @@ const styles = StyleSheet.create({
     backgroundColor: '#171717',
     width: '100%',
     overflow: 'hidden',
-    borderBottomLeftRadius: 32,
-    borderBottomRightRadius: 32,
+    borderBottomLeftRadius: 28,
+    borderBottomRightRadius: 28,
   },
   floatingOptionRow: {
-    height: 74,
-    paddingHorizontal: 24,
+    height: 62,
+    paddingHorizontal: 22,
     flexDirection: 'row',
     alignItems: 'center',
     justifyContent: 'space-between',
@@ -1743,40 +1743,41 @@ const styles = StyleSheet.create({
   floatingOptionLeft: {
     flexDirection: 'row',
     alignItems: 'center',
-    gap: 16,
+    gap: 14,
   },
   floatingOptionIconCircle: {
-    width: 48,
-    height: 48,
-    borderRadius: 14,
+    width: 40,
+    height: 40,
+    borderRadius: 12,
     backgroundColor: '#121212',
     alignItems: 'center',
     justifyContent: 'center',
   },
   floatingOptionTitle: {
     fontFamily: DesignTokens.typography.fontFamily.semiBold,
-    fontSize: 19,
+    fontSize: 17,
     color: '#FFFFFF',
   },
   floatingDivider: {
     height: StyleSheet.hairlineWidth,
     backgroundColor: '#26262A',
-    marginLeft: 88,
+    marginLeft: 76,
   },
   floatingInputCard: {
     width: '100%',
-    height: 68,
+    height: 58,
     backgroundColor: '#171717',
     justifyContent: 'center',
-    paddingHorizontal: 24,
+    paddingHorizontal: 20,
   },
   floatingTextInput: {
-    height: 68,
+    height: 58,
     fontFamily: DesignTokens.typography.fontFamily.medium,
-    fontSize: 20,
-    letterSpacing: -0.8,
+    fontSize: 18,
+    letterSpacing: -0.72,
     color: '#FFFFFF',
     paddingHorizontal: 0,
+    ...(Platform.OS === 'web' ? ({ outlineStyle: 'none' } as any) : {}),
   },
   floatingIconGridCard: {
     backgroundColor: '#171717',
@@ -1824,28 +1825,28 @@ const styles = StyleSheet.create({
     color: '#9E9E9E',
   },
   floatingPrimaryBtn: {
-    height: 60,
+    height: 52,
     borderRadius: DesignTokens.radius.pill,
     backgroundColor: DesignTokens.colors.accentPrimary,
     alignItems: 'center',
     justifyContent: 'center',
-    marginHorizontal: 20,
-    marginTop: 14,
-    marginBottom: 0,
+    marginHorizontal: 18,
+    marginTop: 18,
+    marginBottom: 16,
   },
   floatingPrimaryBtnDisabled: {
     backgroundColor: '#1A1A1A',
   },
   floatingPrimaryBtnText: {
     fontFamily: DesignTokens.typography.fontFamily.bold,
-    fontSize: 19,
+    fontSize: 17,
     letterSpacing: 0,
     color: DesignTokens.colors.textOnAccent,
   },
   floatingPrimaryBtnTextDisabled: {
     color: '#666666',
     fontFamily: DesignTokens.typography.fontFamily.bold,
-    fontSize: 19,
+    fontSize: 17,
     letterSpacing: 0,
   },
 });
