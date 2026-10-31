@@ -338,16 +338,16 @@ export default function StudyHomeScreen() {
   };
 
   const getHeaderTitle = () => {
-    if (createStep === 0) return 'Criar Novo';
+    if (createStep === 0) return 'Criar';
     if (createType === 'folder') {
-      if (createStep === 1) return 'Nome da Pasta';
-      if (createStep === 2) return 'Ícone da Pasta';
+      if (createStep === 1) return 'Nova Pasta';
+      if (createStep === 2) return 'Escolher Ícone';
     }
     if (createType === 'deck') {
-      if (folders.length === 0) return 'Pasta Necessária';
-      if (createStep === 1) return 'Título do Deck';
-      if (createStep === 2) return 'Pasta de Destino';
-      if (createStep === 3) return 'Ícone do Deck';
+      if (folders.length === 0) return 'Novo Deck';
+      if (createStep === 1) return 'Novo Deck';
+      if (createStep === 2) return 'Selecionar Pasta';
+      if (createStep === 3) return 'Escolher Ícone';
     }
     return 'Criar';
   };
@@ -822,18 +822,9 @@ export default function StudyHomeScreen() {
               contentContainerStyle={styles.floatingCardContent}
               keyboardShouldPersistTaps="handled"
               showsVerticalScrollIndicator={false}>
-              {/* Account Context Identifier Row */}
-              <View style={styles.accountContextRow}>
-                <View style={styles.accountContextAvatar}>
-                  <Text style={styles.accountContextAvatarText}>KM</Text>
-                </View>
-                <Text style={styles.accountContextEmail}>cballinger@constoso.com</Text>
-              </View>
-
               {/* Step 0: Choice of Creation */}
               {createStep === 0 && (
                 <View style={styles.floatingStepBlock}>
-                  <Text style={styles.floatingStepPrompt}>O que você deseja criar?</Text>
                   <View style={styles.floatingOptionsCard}>
                     <Pressable
                       onPress={() => {
@@ -851,12 +842,7 @@ export default function StudyHomeScreen() {
                         <View style={styles.floatingOptionIconCircle}>
                           <Folder24Filled size={22} color={DesignTokens.colors.accentPrimary} />
                         </View>
-                        <View style={styles.floatingOptionTextCol}>
-                          <Text style={styles.floatingOptionTitle}>Nova Pasta</Text>
-                          <Text style={styles.floatingOptionDesc}>
-                            Agrupe matérias e organize seus decks
-                          </Text>
-                        </View>
+                        <Text style={styles.floatingOptionTitle}>Nova Pasta</Text>
                       </View>
                       <ChevronRight16Regular size={16} color={DesignTokens.colors.textSecondary} />
                     </Pressable>
@@ -879,12 +865,7 @@ export default function StudyHomeScreen() {
                         <View style={styles.floatingOptionIconCircle}>
                           <BookOpen24Filled size={22} color={DesignTokens.colors.accentPrimary} />
                         </View>
-                        <View style={styles.floatingOptionTextCol}>
-                          <Text style={styles.floatingOptionTitle}>Novo Deck</Text>
-                          <Text style={styles.floatingOptionDesc}>
-                            Baralho de flashcards para memorização
-                          </Text>
-                        </View>
+                        <Text style={styles.floatingOptionTitle}>Novo Deck</Text>
                       </View>
                       <ChevronRight16Regular size={16} color={DesignTokens.colors.textSecondary} />
                     </Pressable>
@@ -895,12 +876,11 @@ export default function StudyHomeScreen() {
               {/* Folder Flow */}
               {createType === 'folder' && createStep === 1 && (
                 <View style={styles.floatingStepBlock}>
-                  <Text style={styles.floatingStepPrompt}>Como você gostaria de chamar esta pasta?</Text>
                   <View style={styles.floatingInputCard}>
                     <TextInput
                       value={newFolderName}
                       onChangeText={setNewFolderName}
-                      placeholder="Nome da pasta (ex: OAB, Medicina...)"
+                      placeholder="Nome da pasta"
                       placeholderTextColor="#707070"
                       style={styles.floatingTextInput}
                       autoFocus
@@ -913,9 +893,6 @@ export default function StudyHomeScreen() {
                       }}
                     />
                   </View>
-                  <Text style={styles.floatingStepHelper}>
-                    As pastas agrupam múltiplos decks e organizam seus estudos por disciplina.
-                  </Text>
 
                   <Pressable
                     onPress={() => {
@@ -945,7 +922,6 @@ export default function StudyHomeScreen() {
 
               {createType === 'folder' && createStep === 2 && (
                 <View style={styles.floatingStepBlock}>
-                  <Text style={styles.floatingStepPrompt}>Escolha um ícone para identificar a pasta</Text>
                   <View style={styles.floatingIconGridCard}>
                     {(['shield', 'graduation', 'language', 'book'] as const).map((iconKey) => {
                       const isSel = newFolderIcon === iconKey;
@@ -964,9 +940,6 @@ export default function StudyHomeScreen() {
                       );
                     })}
                   </View>
-                  <Text style={styles.floatingStepHelper}>
-                    O ícone escolhido será exibido no cartão principal da pasta.
-                  </Text>
 
                   <Pressable
                     onPress={handleCreateFolder}
@@ -984,10 +957,9 @@ export default function StudyHomeScreen() {
               {/* Deck Flow */}
               {createType === 'deck' && folders.length === 0 && (
                 <View style={styles.floatingStepBlock}>
-                  <Text style={styles.floatingStepPrompt}>Pasta necessária</Text>
                   <View style={styles.floatingWarningCard}>
                     <Text style={styles.floatingWarningText}>
-                      Para criar um deck, você precisa ter ao menos uma pasta criada.
+                      Crie uma pasta antes de criar um deck.
                     </Text>
                   </View>
                   <Pressable
@@ -1002,19 +974,18 @@ export default function StudyHomeScreen() {
                       styles.floatingPrimaryBtn,
                       pressed && styles.pressedOpacity,
                     ]}>
-                    <Text style={styles.floatingPrimaryBtnText}>Criar pasta agora</Text>
+                    <Text style={styles.floatingPrimaryBtnText}>Criar Pasta</Text>
                   </Pressable>
                 </View>
               )}
 
               {createType === 'deck' && folders.length > 0 && createStep === 1 && (
                 <View style={styles.floatingStepBlock}>
-                  <Text style={styles.floatingStepPrompt}>Qual será o nome do deck?</Text>
                   <View style={styles.floatingInputCard}>
                     <TextInput
                       value={newDeckTitle}
                       onChangeText={setNewDeckTitle}
-                      placeholder="Título do deck (ex: Direito Penal...)"
+                      placeholder="Título do deck"
                       placeholderTextColor="#707070"
                       style={styles.floatingTextInput}
                       autoFocus
@@ -1027,9 +998,6 @@ export default function StudyHomeScreen() {
                       }}
                     />
                   </View>
-                  <Text style={styles.floatingStepHelper}>
-                    O deck armazenará seus flashcards e revisões diárias.
-                  </Text>
 
                   <Pressable
                     onPress={() => {
@@ -1059,7 +1027,6 @@ export default function StudyHomeScreen() {
 
               {createType === 'deck' && folders.length > 0 && createStep === 2 && (
                 <View style={styles.floatingStepBlock}>
-                  <Text style={styles.floatingStepPrompt}>Onde você deseja salvar este deck?</Text>
                   <View style={styles.floatingFolderListCard}>
                     <ScrollView style={{ maxHeight: 200 }} showsVerticalScrollIndicator={false}>
                       {folders.map((folder, idx) => {
@@ -1088,9 +1055,6 @@ export default function StudyHomeScreen() {
                       })}
                     </ScrollView>
                   </View>
-                  <Text style={styles.floatingStepHelper}>
-                    Selecione a pasta que organizará este novo deck.
-                  </Text>
 
                   <Pressable
                     onPress={() => {
@@ -1110,7 +1074,6 @@ export default function StudyHomeScreen() {
 
               {createType === 'deck' && folders.length > 0 && createStep === 3 && (
                 <View style={styles.floatingStepBlock}>
-                  <Text style={styles.floatingStepPrompt}>Escolha um ícone para o deck</Text>
                   <View style={styles.floatingIconGridCard}>
                     {(['scales', 'book', 'bank', 'graduation', 'language', 'car'] as const).map(
                       (iconKey) => {
@@ -1131,9 +1094,6 @@ export default function StudyHomeScreen() {
                       }
                     )}
                   </View>
-                  <Text style={styles.floatingStepHelper}>
-                    Ícone temático exibido no cartão do deck.
-                  </Text>
 
                   <Pressable
                     onPress={handleCreateDeck}
@@ -1754,51 +1714,11 @@ const styles = StyleSheet.create({
   },
   floatingCardContent: {
     paddingHorizontal: 16,
+    paddingTop: 8,
     paddingBottom: 20,
   },
-  accountContextRow: {
-    flexDirection: 'row',
-    alignItems: 'center',
-    gap: 10,
-    paddingHorizontal: 12,
-    paddingTop: 4,
-    paddingBottom: 14,
-  },
-  accountContextAvatar: {
-    width: 22,
-    height: 22,
-    borderRadius: 11,
-    backgroundColor: '#341A51',
-    alignItems: 'center',
-    justifyContent: 'center',
-  },
-  accountContextAvatarText: {
-    fontFamily: DesignTokens.typography.fontFamily.bold,
-    fontSize: 10,
-    color: '#E2D5F0',
-  },
-  accountContextEmail: {
-    fontFamily: DesignTokens.typography.fontFamily.regular,
-    fontSize: 13,
-    color: '#9E9E9E',
-  },
   floatingStepBlock: {
-    marginTop: 4,
-  },
-  floatingStepPrompt: {
-    fontFamily: DesignTokens.typography.fontFamily.semiBold,
-    fontSize: 14,
-    color: DesignTokens.colors.textPrimary,
-    marginBottom: 10,
-    paddingHorizontal: 4,
-  },
-  floatingStepHelper: {
-    fontFamily: DesignTokens.typography.fontFamily.regular,
-    fontSize: 12,
-    lineHeight: 16,
-    color: DesignTokens.colors.textSecondary,
-    marginTop: 8,
-    paddingHorizontal: 4,
+    marginTop: 2,
   },
   floatingOptionsCard: {
     backgroundColor: '#262626',
@@ -1806,7 +1726,7 @@ const styles = StyleSheet.create({
     overflow: 'hidden',
   },
   floatingOptionRow: {
-    height: 64,
+    height: 56,
     paddingHorizontal: 16,
     flexDirection: 'row',
     alignItems: 'center',
@@ -1819,29 +1739,19 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     alignItems: 'center',
     gap: 12,
-    flex: 1,
   },
   floatingOptionIconCircle: {
-    width: 38,
-    height: 38,
+    width: 36,
+    height: 36,
     borderRadius: 10,
     backgroundColor: '#1C1C1E',
     alignItems: 'center',
     justifyContent: 'center',
   },
-  floatingOptionTextCol: {
-    flex: 1,
-  },
   floatingOptionTitle: {
     fontFamily: DesignTokens.typography.fontFamily.semiBold,
     fontSize: 15,
     color: '#FFFFFF',
-  },
-  floatingOptionDesc: {
-    fontFamily: DesignTokens.typography.fontFamily.regular,
-    fontSize: 12,
-    color: DesignTokens.colors.textSecondary,
-    marginTop: 2,
   },
   floatingDivider: {
     height: StyleSheet.hairlineWidth,
