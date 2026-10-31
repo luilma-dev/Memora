@@ -873,7 +873,7 @@ export default function StudyHomeScreen() {
                       value={newFolderName}
                       onChangeText={setNewFolderName}
                       placeholder="Nome da pasta"
-                      placeholderTextColor="#4A4A4E"
+                      placeholderTextColor="#323232"
                       style={styles.floatingTextInput}
                       autoFocus
                       returnKeyType="next"
@@ -978,7 +978,7 @@ export default function StudyHomeScreen() {
                       value={newDeckTitle}
                       onChangeText={setNewDeckTitle}
                       placeholder="Título do deck"
-                      placeholderTextColor="#4A4A4E"
+                      placeholderTextColor="#323232"
                       style={styles.floatingTextInput}
                       autoFocus
                       returnKeyType="next"
@@ -1712,7 +1712,7 @@ const styles = StyleSheet.create({
     width: '100%',
   },
   floatingOptionsCard: {
-    backgroundColor: '#1C1C1F',
+    backgroundColor: '#171717',
     width: '100%',
     overflow: 'hidden',
   },
@@ -1752,19 +1752,20 @@ const styles = StyleSheet.create({
   floatingInputCard: {
     width: '100%',
     height: 54,
-    backgroundColor: '#1C1C1F',
+    backgroundColor: '#171717',
     justifyContent: 'center',
     paddingHorizontal: 20,
   },
   floatingTextInput: {
     height: 54,
-    fontFamily: DesignTokens.typography.fontFamily.regular,
+    fontFamily: DesignTokens.typography.fontFamily.medium,
     fontSize: 17,
+    letterSpacing: -0.68,
     color: '#FFFFFF',
     paddingHorizontal: 0,
   },
   floatingIconGridCard: {
-    backgroundColor: '#1C1C1F',
+    backgroundColor: '#171717',
     padding: 16,
     width: '100%',
     flexDirection: 'row',
@@ -1784,7 +1785,7 @@ const styles = StyleSheet.create({
     backgroundColor: DesignTokens.colors.accentPrimary,
   },
   floatingFolderListCard: {
-    backgroundColor: '#1C1C1F',
+    backgroundColor: '#171717',
     width: '100%',
     overflow: 'hidden',
   },
@@ -1796,7 +1797,7 @@ const styles = StyleSheet.create({
     justifyContent: 'space-between',
   },
   floatingWarningCard: {
-    backgroundColor: '#1C1C1F',
+    backgroundColor: '#171717',
     marginHorizontal: 16,
     marginTop: 16,
     borderRadius: 14,
@@ -1819,14 +1820,17 @@ const styles = StyleSheet.create({
     marginBottom: 4,
   },
   floatingPrimaryBtnDisabled: {
-    backgroundColor: '#202023',
+    backgroundColor: '#1A1A1A',
   },
   floatingPrimaryBtnText: {
-    fontFamily: DesignTokens.typography.fontFamily.semiBold,
+    fontFamily: DesignTokens.typography.fontFamily.bold,
     fontSize: 16,
+    letterSpacing: 0,
     color: DesignTokens.colors.textOnAccent,
   },
   floatingPrimaryBtnTextDisabled: {
-    color: '#55555A',
+    color: '#666666',
+    fontFamily: DesignTokens.typography.fontFamily.bold,
+    letterSpacing: 0,
   },
 });
