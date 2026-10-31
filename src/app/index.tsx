@@ -1683,6 +1683,7 @@ const styles = StyleSheet.create({
     shadowOpacity: 0.65,
     shadowRadius: 30,
     elevation: 24,
+    marginBottom: 50,
   },
   floatingCardHeader: {
     height: 60,
