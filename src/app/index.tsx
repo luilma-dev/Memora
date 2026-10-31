@@ -1721,7 +1721,7 @@ const styles = StyleSheet.create({
     marginTop: 0,
   },
   floatingOptionsCard: {
-    backgroundColor: '#222222',
+    backgroundColor: '#1C1C1E',
     borderRadius: 14,
     overflow: 'hidden',
   },
@@ -1733,7 +1733,7 @@ const styles = StyleSheet.create({
     justifyContent: 'space-between',
   },
   floatingOptionRowPressed: {
-    backgroundColor: '#2C2C2C',
+    backgroundColor: '#242428',
   },
   floatingOptionLeft: {
     flexDirection: 'row',
@@ -1744,7 +1744,7 @@ const styles = StyleSheet.create({
     width: 36,
     height: 36,
     borderRadius: 10,
-    backgroundColor: '#181818',
+    backgroundColor: '#141414',
     alignItems: 'center',
     justifyContent: 'center',
   },
@@ -1755,11 +1755,11 @@ const styles = StyleSheet.create({
   },
   floatingDivider: {
     height: StyleSheet.hairlineWidth,
-    backgroundColor: '#2C2C2C',
+    backgroundColor: '#26262A',
     marginLeft: 54,
   },
   floatingInputCard: {
-    backgroundColor: '#222222',
+    backgroundColor: '#1C1C1E',
     borderRadius: 12,
     overflow: 'hidden',
   },
@@ -1771,7 +1771,7 @@ const styles = StyleSheet.create({
     color: '#FFFFFF',
   },
   floatingIconGridCard: {
-    backgroundColor: '#222222',
+    backgroundColor: '#1C1C1E',
     borderRadius: 14,
     padding: 12,
     flexDirection: 'row',
@@ -1783,7 +1783,7 @@ const styles = StyleSheet.create({
     width: 52,
     height: 52,
     borderRadius: 12,
-    backgroundColor: '#161616',
+    backgroundColor: '#141414',
     alignItems: 'center',
     justifyContent: 'center',
   },
@@ -1791,7 +1791,7 @@ const styles = StyleSheet.create({
     backgroundColor: DesignTokens.colors.accentPrimary,
   },
   floatingFolderListCard: {
-    backgroundColor: '#222222',
+    backgroundColor: '#1C1C1E',
     borderRadius: 14,
     overflow: 'hidden',
   },
@@ -1803,7 +1803,7 @@ const styles = StyleSheet.create({
     justifyContent: 'space-between',
   },
   floatingWarningCard: {
-    backgroundColor: '#222222',
+    backgroundColor: '#1C1C1E',
     borderRadius: 12,
     padding: 16,
   },
@@ -1822,7 +1822,7 @@ const styles = StyleSheet.create({
     marginTop: 18,
   },
   floatingPrimaryBtnDisabled: {
-    backgroundColor: '#262626',
+    backgroundColor: '#1C1C1E',
   },
   floatingPrimaryBtnText: {
     fontFamily: DesignTokens.typography.fontFamily.semiBold,
@@ -1830,6 +1830,6 @@ const styles = StyleSheet.create({
     color: DesignTokens.colors.textOnAccent,
   },
   floatingPrimaryBtnTextDisabled: {
-    color: '#707070',
+    color: '#666666',
   },
 });
