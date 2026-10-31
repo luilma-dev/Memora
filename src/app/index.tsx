@@ -493,12 +493,10 @@ export default function StudyHomeScreen() {
               accessibilityRole="button"
               accessibilityLabel="Criar primeira pasta"
               style={({ pressed }) => [
-                styles.emptyStateIconOuter,
+                styles.emptyStateIconWrapper,
                 pressed && styles.pressedOpacity,
               ]}>
-              <View style={styles.emptyStateIconInner}>
-                <FolderAdd24Filled size={36} color={DesignTokens.colors.accentPrimary} />
-              </View>
+              <FolderAdd24Filled size={72} color={DesignTokens.colors.accentPrimary} />
             </Pressable>
             <Text style={styles.emptyStateTitle}>Nenhuma pasta ainda</Text>
             <Text style={styles.emptyStateSubtitle}>
@@ -1537,22 +1535,10 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     justifyContent: 'center',
   },
-  emptyStateIconOuter: {
-    width: 96,
-    height: 96,
-    borderRadius: 30,
-    backgroundColor: '#181818',
+  emptyStateIconWrapper: {
     alignItems: 'center',
     justifyContent: 'center',
     marginBottom: 20,
-  },
-  emptyStateIconInner: {
-    width: 64,
-    height: 64,
-    borderRadius: 20,
-    backgroundColor: 'rgba(71, 158, 245, 0.12)',
-    alignItems: 'center',
-    justifyContent: 'center',
   },
   emptyStateTitle: {
     fontFamily: DesignTokens.typography.fontFamily.semiBold,
