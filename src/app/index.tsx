@@ -844,10 +844,10 @@ export default function StudyHomeScreen() {
                         pressed && styles.floatingOptionRowPressed,
                       ]}>
                       <View style={styles.floatingOptionLeft}>
-                        <Folder24Regular size={24} color={DesignTokens.colors.accentPrimary} />
+                        <Folder24Regular size={28} color={DesignTokens.colors.accentPrimary} />
                         <Text style={styles.floatingOptionTitle}>Nova Pasta</Text>
                       </View>
-                      <ChevronRight16Regular size={18} color={DesignTokens.colors.textSecondary} />
+                      <ChevronRight16Regular size={20} color={DesignTokens.colors.accentPrimary} />
                     </Pressable>
 
                     <View style={styles.floatingDivider} />
@@ -865,10 +865,10 @@ export default function StudyHomeScreen() {
                         pressed && styles.floatingOptionRowPressed,
                       ]}>
                       <View style={styles.floatingOptionLeft}>
-                        <BookOpen24Regular size={24} color={DesignTokens.colors.accentPrimary} />
+                        <BookOpen24Regular size={28} color={DesignTokens.colors.accentPrimary} />
                         <Text style={styles.floatingOptionTitle}>Novo Deck</Text>
                       </View>
-                      <ChevronRight16Regular size={18} color={DesignTokens.colors.textSecondary} />
+                      <ChevronRight16Regular size={20} color={DesignTokens.colors.accentPrimary} />
                     </Pressable>
                   </View>
                 </View>
@@ -1729,7 +1729,7 @@ const styles = StyleSheet.create({
     borderBottomRightRadius: 28,
   },
   floatingOptionRow: {
-    height: 62,
+    height: 70,
     paddingHorizontal: 22,
     flexDirection: 'row',
     alignItems: 'center',
@@ -1741,25 +1741,17 @@ const styles = StyleSheet.create({
   floatingOptionLeft: {
     flexDirection: 'row',
     alignItems: 'center',
-    gap: 14,
-  },
-  floatingOptionIconCircle: {
-    width: 40,
-    height: 40,
-    borderRadius: 12,
-    backgroundColor: '#121212',
-    alignItems: 'center',
-    justifyContent: 'center',
+    gap: 16,
   },
   floatingOptionTitle: {
     fontFamily: DesignTokens.typography.fontFamily.semiBold,
-    fontSize: 17,
-    color: '#FFFFFF',
+    fontSize: 20,
+    color: '#479EF5',
   },
   floatingDivider: {
     height: StyleSheet.hairlineWidth,
     backgroundColor: '#26262A',
-    marginLeft: 60,
+    marginLeft: 66,
   },
   floatingInputCard: {
     width: '100%',
