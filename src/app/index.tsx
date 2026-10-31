@@ -20,10 +20,11 @@ import {
   AddCircle24Regular,
   ArrowRight16Regular,
   BookOpen24Filled,
+  BookOpen24Regular,
   BuildingBank24Filled,
   Checkmark12Filled,
   ChevronRight16Regular,
-  Folder24Filled,
+  Folder24Regular,
   FolderAdd24Filled,
   HatGraduation24Filled,
   History24Regular,
@@ -843,9 +844,7 @@ export default function StudyHomeScreen() {
                         pressed && styles.floatingOptionRowPressed,
                       ]}>
                       <View style={styles.floatingOptionLeft}>
-                        <View style={styles.floatingOptionIconCircle}>
-                          <Folder24Filled size={24} color={DesignTokens.colors.accentPrimary} />
-                        </View>
+                        <Folder24Regular size={24} color={DesignTokens.colors.accentPrimary} />
                         <Text style={styles.floatingOptionTitle}>Nova Pasta</Text>
                       </View>
                       <ChevronRight16Regular size={18} color={DesignTokens.colors.textSecondary} />
@@ -866,9 +865,7 @@ export default function StudyHomeScreen() {
                         pressed && styles.floatingOptionRowPressed,
                       ]}>
                       <View style={styles.floatingOptionLeft}>
-                        <View style={styles.floatingOptionIconCircle}>
-                          <BookOpen24Filled size={24} color={DesignTokens.colors.accentPrimary} />
-                        </View>
+                        <BookOpen24Regular size={24} color={DesignTokens.colors.accentPrimary} />
                         <Text style={styles.floatingOptionTitle}>Novo Deck</Text>
                       </View>
                       <ChevronRight16Regular size={18} color={DesignTokens.colors.textSecondary} />
@@ -1762,7 +1759,7 @@ const styles = StyleSheet.create({
   floatingDivider: {
     height: StyleSheet.hairlineWidth,
     backgroundColor: '#26262A',
-    marginLeft: 76,
+    marginLeft: 60,
   },
   floatingInputCard: {
     width: '100%',
