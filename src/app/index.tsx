@@ -24,7 +24,7 @@ import {
   Checkmark12Filled,
   ChevronRight16Regular,
   Dismiss24Regular,
-  Folder24Regular,
+  Folder24Filled,
   FolderAdd24Filled,
   HatGraduation24Filled,
   History24Regular,
@@ -237,8 +237,9 @@ export default function StudyHomeScreen() {
   const [selectedFolderId, setSelectedFolderId] = useState<string | null>(null);
   const [isTransitioning, setIsTransitioning] = useState(false);
 
-  // Creation modal state
+  // Creation modal state (Progressive Floating Card)
   const [isCreateModalOpen, setIsCreateModalOpen] = useState(false);
+  const [createStep, setCreateStep] = useState<number>(0);
   const [createType, setCreateType] = useState<'folder' | 'deck'>('folder');
   const [newFolderName, setNewFolderName] = useState('');
   const [newFolderIcon, setNewFolderIcon] = useState<StudyFolder['icon']>('shield');
@@ -308,6 +309,49 @@ export default function StudyHomeScreen() {
     animateDecksIn(targetFolder.decks.length);
   };
 
+  const handleOpenCreate = (type?: 'folder' | 'deck') => {
+    LayoutAnimation.configureNext(LayoutAnimation.Presets.easeInEaseOut);
+    if (type) {
+      setCreateType(type);
+      setCreateStep(1);
+    } else {
+      setCreateStep(0);
+    }
+    setIsCreateModalOpen(true);
+  };
+
+  const handleCloseCreate = () => {
+    LayoutAnimation.configureNext(LayoutAnimation.Presets.easeInEaseOut);
+    setIsCreateModalOpen(false);
+    setCreateStep(0);
+    setNewFolderName('');
+    setNewDeckTitle('');
+  };
+
+  const handleBackStep = () => {
+    LayoutAnimation.configureNext(LayoutAnimation.Presets.easeInEaseOut);
+    if (createStep > 0) {
+      setCreateStep((prev) => prev - 1);
+    } else {
+      handleCloseCreate();
+    }
+  };
+
+  const getHeaderTitle = () => {
+    if (createStep === 0) return 'Criar Novo';
+    if (createType === 'folder') {
+      if (createStep === 1) return 'Nome da Pasta';
+      if (createStep === 2) return 'Ícone da Pasta';
+    }
+    if (createType === 'deck') {
+      if (folders.length === 0) return 'Pasta Necessária';
+      if (createStep === 1) return 'Título do Deck';
+      if (createStep === 2) return 'Pasta de Destino';
+      if (createStep === 3) return 'Ícone do Deck';
+    }
+    return 'Criar';
+  };
+
   const handleCreateFolder = () => {
     if (!newFolderName.trim()) return;
     LayoutAnimation.configureNext(LayoutAnimation.Presets.easeInEaseOut);
@@ -322,6 +366,7 @@ export default function StudyHomeScreen() {
     };
     setFolders((prev) => [newFolder, ...prev]);
     setNewFolderName('');
+    setCreateStep(0);
     setIsCreateModalOpen(false);
   };
 
@@ -353,6 +398,7 @@ export default function StudyHomeScreen() {
       })
     );
     setNewDeckTitle('');
+    setCreateStep(0);
     setIsCreateModalOpen(false);
   };
 
@@ -486,10 +532,7 @@ export default function StudyHomeScreen() {
         {folders.length === 0 ? (
           <View style={styles.emptyStateContainer}>
             <Pressable
-              onPress={() => {
-                setCreateType('folder');
-                setIsCreateModalOpen(true);
-              }}
+              onPress={() => handleOpenCreate('folder')}
               accessibilityRole="button"
               accessibilityLabel="Criar primeira pasta"
               style={({ pressed }) => [
@@ -503,10 +546,7 @@ export default function StudyHomeScreen() {
               Crie sua primeira pasta para organizar seus estudos e decks de flashcards.
             </Text>
             <Pressable
-              onPress={() => {
-                setCreateType('folder');
-                setIsCreateModalOpen(true);
-              }}
+              onPress={() => handleOpenCreate('folder')}
               accessibilityRole="button"
               accessibilityLabel="Criar primeira pasta"
               style={({ pressed }) => [
@@ -629,8 +669,7 @@ export default function StudyHomeScreen() {
                 <Pressable
                   onPress={() => {
                     setSelectedParentFolderId(selectedFolder.id);
-                    setCreateType('deck');
-                    setIsCreateModalOpen(true);
+                    handleOpenCreate('deck');
                   }}
                   accessibilityRole="button"
                   accessibilityLabel="Criar deck nesta pasta"
@@ -709,9 +748,10 @@ export default function StudyHomeScreen() {
       <Pressable
         onPress={() => {
           if (folders.length === 0) {
-            setCreateType('folder');
+            handleOpenCreate('folder');
+          } else {
+            handleOpenCreate();
           }
-          setIsCreateModalOpen(true);
         }}
         accessibilityRole="button"
         accessibilityLabel="Criar nova pasta ou deck"
@@ -723,71 +763,64 @@ export default function StudyHomeScreen() {
         <Add24Regular size={28} color={DesignTokens.colors.textOnAccent} />
       </Pressable>
 
-      {/* Inset Grouped Creation Modal (Fluent 2 Mobile Style) */}
+      {/* Progressive Floating Card Creation Dialog */}
       <Modal
         visible={isCreateModalOpen}
-        animationType="slide"
+        animationType="fade"
         transparent
-        onRequestClose={() => setIsCreateModalOpen(false)}>
+        onRequestClose={handleCloseCreate}>
         <KeyboardAvoidingView
           behavior={Platform.OS === 'ios' ? 'padding' : undefined}
-          style={styles.modalBackdrop}>
+          style={styles.floatingModalBackdrop}>
           <Pressable
-            style={styles.modalDismissArea}
-            onPress={() => setIsCreateModalOpen(false)}
+            style={StyleSheet.absoluteFill}
+            onPress={handleCloseCreate}
+            accessibilityRole="button"
+            accessibilityLabel="Fechar janela"
           />
 
-          <View style={styles.modalSheetCard}>
-            {/* Modal Navigation Top Bar (#1E1E1E) */}
-            <View style={styles.modalSheetHeader}>
-              <Pressable
-                onPress={() => setIsCreateModalOpen(false)}
-                accessibilityRole="button"
-                accessibilityLabel="Voltar"
-                hitSlop={12}
-                style={({ pressed }) => [styles.modalHeaderBtn, pressed && styles.pressedOpacity]}>
-                <Text style={styles.modalHeaderBtnText}>Voltar</Text>
-              </Pressable>
+          <View style={styles.floatingCardContainer}>
+            {/* Top Bar of Floating Card */}
+            <View style={styles.floatingCardHeader}>
+              {createStep > 0 ? (
+                <Pressable
+                  onPress={handleBackStep}
+                  hitSlop={12}
+                  accessibilityRole="button"
+                  accessibilityLabel="Voltar"
+                  style={({ pressed }) => [styles.floatingHeaderBtn, pressed && styles.pressedOpacity]}>
+                  <Text style={styles.floatingHeaderBtnText}>Voltar</Text>
+                </Pressable>
+              ) : (
+                <Pressable
+                  onPress={handleCloseCreate}
+                  hitSlop={12}
+                  accessibilityRole="button"
+                  accessibilityLabel="Cancelar"
+                  style={({ pressed }) => [styles.floatingHeaderBtn, pressed && styles.pressedOpacity]}>
+                  <Text style={styles.floatingHeaderBtnText}>Cancelar</Text>
+                </Pressable>
+              )}
 
-              <Text style={styles.modalSheetTitle}>
-                {createType === 'folder' ? 'Nova Pasta' : 'Novo Deck'}
+              <Text style={styles.floatingCardTitle} numberOfLines={1}>
+                {getHeaderTitle()}
               </Text>
 
               <Pressable
-                onPress={createType === 'folder' ? handleCreateFolder : handleCreateDeck}
-                disabled={
-                  createType === 'folder'
-                    ? !newFolderName.trim()
-                    : !newDeckTitle.trim() || folders.length === 0
-                }
-                accessibilityRole="button"
-                accessibilityLabel="Criar"
+                onPress={handleCloseCreate}
                 hitSlop={12}
-                style={({ pressed }) => [
-                  styles.modalHeaderBtn,
-                  styles.modalHeaderBtnRight,
-                  pressed && styles.pressedOpacity,
-                ]}>
-                <Text
-                  style={[
-                    styles.modalHeaderActionText,
-                    (createType === 'folder'
-                      ? !newFolderName.trim()
-                      : !newDeckTitle.trim() || folders.length === 0) &&
-                      styles.modalHeaderActionTextDisabled,
-                  ]}>
-                  Criar
-                </Text>
+                accessibilityRole="button"
+                accessibilityLabel="Fechar"
+                style={({ pressed }) => [styles.floatingCloseBtn, pressed && styles.pressedOpacity]}>
+                <Dismiss24Regular size={20} color={DesignTokens.colors.textSecondary} />
               </Pressable>
             </View>
 
-            {/* Modal Body (#141414 Inset Grouped Canvas) */}
+            {/* Floating Card Scrollable Body */}
             <ScrollView
-              style={styles.modalSheetBody}
-              contentContainerStyle={[
-                styles.modalSheetScrollContent,
-                { paddingBottom: Math.max(insets.bottom, 24) + 20 },
-              ]}
+              style={styles.floatingCardBody}
+              contentContainerStyle={styles.floatingCardContent}
+              keyboardShouldPersistTaps="handled"
               showsVerticalScrollIndicator={false}>
               {/* Account Context Identifier Row */}
               <View style={styles.accountContextRow}>
@@ -797,245 +830,322 @@ export default function StudyHomeScreen() {
                 <Text style={styles.accountContextEmail}>cballinger@constoso.com</Text>
               </View>
 
-              {/* Group: Tipo de Criação */}
-              <View style={styles.insetSectionGroup}>
-                <Text style={styles.insetSectionHeader}>TIPO DE CRIAÇÃO</Text>
-                <View style={styles.insetCard}>
-                  <Pressable
-                    onPress={() => setCreateType('folder')}
-                    accessibilityRole="button"
-                    accessibilityLabel="Tipo Pasta"
-                    style={({ pressed }) => [
-                      styles.insetRow,
-                      pressed && styles.insetRowPressed,
-                    ]}>
-                    <View style={styles.insetRowLeft}>
-                      <Folder24Regular size={20} color={DesignTokens.colors.textPrimary} />
-                      <Text style={styles.insetRowLabel}>Nova Pasta</Text>
-                    </View>
-                    {createType === 'folder' && (
-                      <Checkmark12Filled size={16} color={DesignTokens.colors.accentPrimary} />
-                    )}
-                  </Pressable>
+              {/* Step 0: Choice of Creation */}
+              {createStep === 0 && (
+                <View style={styles.floatingStepBlock}>
+                  <Text style={styles.floatingStepPrompt}>O que você deseja criar?</Text>
+                  <View style={styles.floatingOptionsCard}>
+                    <Pressable
+                      onPress={() => {
+                        LayoutAnimation.configureNext(LayoutAnimation.Presets.easeInEaseOut);
+                        setCreateType('folder');
+                        setCreateStep(1);
+                      }}
+                      accessibilityRole="button"
+                      accessibilityLabel="Nova Pasta"
+                      style={({ pressed }) => [
+                        styles.floatingOptionRow,
+                        pressed && styles.floatingOptionRowPressed,
+                      ]}>
+                      <View style={styles.floatingOptionLeft}>
+                        <View style={styles.floatingOptionIconCircle}>
+                          <Folder24Filled size={22} color={DesignTokens.colors.accentPrimary} />
+                        </View>
+                        <View style={styles.floatingOptionTextCol}>
+                          <Text style={styles.floatingOptionTitle}>Nova Pasta</Text>
+                          <Text style={styles.floatingOptionDesc}>
+                            Agrupe matérias e organize seus decks
+                          </Text>
+                        </View>
+                      </View>
+                      <ChevronRight16Regular size={16} color={DesignTokens.colors.textSecondary} />
+                    </Pressable>
 
-                  <View style={styles.insetDivider} />
+                    <View style={styles.floatingDivider} />
+
+                    <Pressable
+                      onPress={() => {
+                        LayoutAnimation.configureNext(LayoutAnimation.Presets.easeInEaseOut);
+                        setCreateType('deck');
+                        setCreateStep(1);
+                      }}
+                      accessibilityRole="button"
+                      accessibilityLabel="Novo Deck"
+                      style={({ pressed }) => [
+                        styles.floatingOptionRow,
+                        pressed && styles.floatingOptionRowPressed,
+                      ]}>
+                      <View style={styles.floatingOptionLeft}>
+                        <View style={styles.floatingOptionIconCircle}>
+                          <BookOpen24Filled size={22} color={DesignTokens.colors.accentPrimary} />
+                        </View>
+                        <View style={styles.floatingOptionTextCol}>
+                          <Text style={styles.floatingOptionTitle}>Novo Deck</Text>
+                          <Text style={styles.floatingOptionDesc}>
+                            Baralho de flashcards para memorização
+                          </Text>
+                        </View>
+                      </View>
+                      <ChevronRight16Regular size={16} color={DesignTokens.colors.textSecondary} />
+                    </Pressable>
+                  </View>
+                </View>
+              )}
+
+              {/* Folder Flow */}
+              {createType === 'folder' && createStep === 1 && (
+                <View style={styles.floatingStepBlock}>
+                  <Text style={styles.floatingStepPrompt}>Como você gostaria de chamar esta pasta?</Text>
+                  <View style={styles.floatingInputCard}>
+                    <TextInput
+                      value={newFolderName}
+                      onChangeText={setNewFolderName}
+                      placeholder="Nome da pasta (ex: OAB, Medicina...)"
+                      placeholderTextColor="#707070"
+                      style={styles.floatingTextInput}
+                      autoFocus
+                      returnKeyType="next"
+                      onSubmitEditing={() => {
+                        if (newFolderName.trim()) {
+                          LayoutAnimation.configureNext(LayoutAnimation.Presets.easeInEaseOut);
+                          setCreateStep(2);
+                        }
+                      }}
+                    />
+                  </View>
+                  <Text style={styles.floatingStepHelper}>
+                    As pastas agrupam múltiplos decks e organizam seus estudos por disciplina.
+                  </Text>
 
                   <Pressable
-                    onPress={() => setCreateType('deck')}
+                    onPress={() => {
+                      if (newFolderName.trim()) {
+                        LayoutAnimation.configureNext(LayoutAnimation.Presets.easeInEaseOut);
+                        setCreateStep(2);
+                      }
+                    }}
+                    disabled={!newFolderName.trim()}
                     accessibilityRole="button"
-                    accessibilityLabel="Tipo Deck"
+                    accessibilityLabel="Continuar"
                     style={({ pressed }) => [
-                      styles.insetRow,
-                      pressed && styles.insetRowPressed,
+                      styles.floatingPrimaryBtn,
+                      !newFolderName.trim() && styles.floatingPrimaryBtnDisabled,
+                      pressed && styles.pressedOpacity,
                     ]}>
-                    <View style={styles.insetRowLeft}>
-                      <BookOpen24Filled size={20} color={DesignTokens.colors.textPrimary} />
-                      <Text style={styles.insetRowLabel}>Novo Deck</Text>
-                    </View>
-                    {createType === 'deck' && (
-                      <Checkmark12Filled size={16} color={DesignTokens.colors.accentPrimary} />
-                    )}
+                    <Text
+                      style={[
+                        styles.floatingPrimaryBtnText,
+                        !newFolderName.trim() && styles.floatingPrimaryBtnTextDisabled,
+                      ]}>
+                      Continuar
+                    </Text>
                   </Pressable>
                 </View>
-                <Text style={styles.insetSectionFooter}>
-                  Selecione se deseja organizar uma nova disciplina ou criar um deck de flashcards.
-                </Text>
-              </View>
+              )}
 
-              {/* Content when creating Folder */}
-              {createType === 'folder' ? (
-                <>
-                  <View style={styles.insetSectionGroup}>
-                    <Text style={styles.insetSectionHeader}>INFORMAÇÕES DA PASTA</Text>
-                    <View style={styles.insetCard}>
-                      <TextInput
-                        value={newFolderName}
-                        onChangeText={setNewFolderName}
-                        placeholder="Nome da pasta (ex: OAB, Medicina...)"
-                        placeholderTextColor="#707070"
-                        style={styles.insetTextInput}
-                        autoFocus
-                      />
-                    </View>
-                    <Text style={styles.insetSectionFooter}>
-                      As pastas agrupam múltiplos decks e organizam seus estudos por matéria.
+              {createType === 'folder' && createStep === 2 && (
+                <View style={styles.floatingStepBlock}>
+                  <Text style={styles.floatingStepPrompt}>Escolha um ícone para identificar a pasta</Text>
+                  <View style={styles.floatingIconGridCard}>
+                    {(['shield', 'graduation', 'language', 'book'] as const).map((iconKey) => {
+                      const isSel = newFolderIcon === iconKey;
+                      return (
+                        <Pressable
+                          key={iconKey}
+                          onPress={() => setNewFolderIcon(iconKey)}
+                          accessibilityRole="button"
+                          accessibilityLabel={`Ícone ${iconKey}`}
+                          style={[
+                            styles.floatingIconPill,
+                            isSel && styles.floatingIconPillSelected,
+                          ]}>
+                          <FolderIcon type={iconKey} size={24} onAccent={isSel} />
+                        </Pressable>
+                      );
+                    })}
+                  </View>
+                  <Text style={styles.floatingStepHelper}>
+                    O ícone escolhido será exibido no cartão principal da pasta.
+                  </Text>
+
+                  <Pressable
+                    onPress={handleCreateFolder}
+                    accessibilityRole="button"
+                    accessibilityLabel="Criar Pasta"
+                    style={({ pressed }) => [
+                      styles.floatingPrimaryBtn,
+                      pressed && styles.pressedOpacity,
+                    ]}>
+                    <Text style={styles.floatingPrimaryBtnText}>Criar Pasta</Text>
+                  </Pressable>
+                </View>
+              )}
+
+              {/* Deck Flow */}
+              {createType === 'deck' && folders.length === 0 && (
+                <View style={styles.floatingStepBlock}>
+                  <Text style={styles.floatingStepPrompt}>Pasta necessária</Text>
+                  <View style={styles.floatingWarningCard}>
+                    <Text style={styles.floatingWarningText}>
+                      Para criar um deck, você precisa ter ao menos uma pasta criada.
                     </Text>
                   </View>
+                  <Pressable
+                    onPress={() => {
+                      LayoutAnimation.configureNext(LayoutAnimation.Presets.easeInEaseOut);
+                      setCreateType('folder');
+                      setCreateStep(1);
+                    }}
+                    accessibilityRole="button"
+                    accessibilityLabel="Criar pasta primeiro"
+                    style={({ pressed }) => [
+                      styles.floatingPrimaryBtn,
+                      pressed && styles.pressedOpacity,
+                    ]}>
+                    <Text style={styles.floatingPrimaryBtnText}>Criar pasta agora</Text>
+                  </Pressable>
+                </View>
+              )}
 
-                  <View style={styles.insetSectionGroup}>
-                    <Text style={styles.insetSectionHeader}>ÍCONE DE IDENTIFICAÇÃO</Text>
-                    <View style={[styles.insetCard, styles.iconPickerCard]}>
-                      {(['shield', 'graduation', 'language', 'book'] as const).map((iconKey) => {
-                        const isSel = newFolderIcon === iconKey;
+              {createType === 'deck' && folders.length > 0 && createStep === 1 && (
+                <View style={styles.floatingStepBlock}>
+                  <Text style={styles.floatingStepPrompt}>Qual será o nome do deck?</Text>
+                  <View style={styles.floatingInputCard}>
+                    <TextInput
+                      value={newDeckTitle}
+                      onChangeText={setNewDeckTitle}
+                      placeholder="Título do deck (ex: Direito Penal...)"
+                      placeholderTextColor="#707070"
+                      style={styles.floatingTextInput}
+                      autoFocus
+                      returnKeyType="next"
+                      onSubmitEditing={() => {
+                        if (newDeckTitle.trim()) {
+                          LayoutAnimation.configureNext(LayoutAnimation.Presets.easeInEaseOut);
+                          setCreateStep(2);
+                        }
+                      }}
+                    />
+                  </View>
+                  <Text style={styles.floatingStepHelper}>
+                    O deck armazenará seus flashcards e revisões diárias.
+                  </Text>
+
+                  <Pressable
+                    onPress={() => {
+                      if (newDeckTitle.trim()) {
+                        LayoutAnimation.configureNext(LayoutAnimation.Presets.easeInEaseOut);
+                        setCreateStep(2);
+                      }
+                    }}
+                    disabled={!newDeckTitle.trim()}
+                    accessibilityRole="button"
+                    accessibilityLabel="Continuar"
+                    style={({ pressed }) => [
+                      styles.floatingPrimaryBtn,
+                      !newDeckTitle.trim() && styles.floatingPrimaryBtnDisabled,
+                      pressed && styles.pressedOpacity,
+                    ]}>
+                    <Text
+                      style={[
+                        styles.floatingPrimaryBtnText,
+                        !newDeckTitle.trim() && styles.floatingPrimaryBtnTextDisabled,
+                      ]}>
+                      Continuar
+                    </Text>
+                  </Pressable>
+                </View>
+              )}
+
+              {createType === 'deck' && folders.length > 0 && createStep === 2 && (
+                <View style={styles.floatingStepBlock}>
+                  <Text style={styles.floatingStepPrompt}>Onde você deseja salvar este deck?</Text>
+                  <View style={styles.floatingFolderListCard}>
+                    <ScrollView style={{ maxHeight: 200 }} showsVerticalScrollIndicator={false}>
+                      {folders.map((folder, idx) => {
+                        const isSel = (selectedParentFolderId || folders[0]?.id) === folder.id;
+                        return (
+                          <React.Fragment key={folder.id}>
+                            {idx > 0 && <View style={styles.floatingDivider} />}
+                            <Pressable
+                              onPress={() => setSelectedParentFolderId(folder.id)}
+                              accessibilityRole="button"
+                              accessibilityLabel={`Selecionar pasta ${folder.name}`}
+                              style={({ pressed }) => [
+                                styles.floatingFolderRow,
+                                pressed && styles.floatingOptionRowPressed,
+                              ]}>
+                              <View style={styles.floatingOptionLeft}>
+                                <FolderIcon type={folder.icon} size={20} />
+                                <Text style={styles.floatingOptionTitle}>{folder.name}</Text>
+                              </View>
+                              {isSel && (
+                                <Checkmark12Filled size={18} color={DesignTokens.colors.accentPrimary} />
+                              )}
+                            </Pressable>
+                          </React.Fragment>
+                        );
+                      })}
+                    </ScrollView>
+                  </View>
+                  <Text style={styles.floatingStepHelper}>
+                    Selecione a pasta que organizará este novo deck.
+                  </Text>
+
+                  <Pressable
+                    onPress={() => {
+                      LayoutAnimation.configureNext(LayoutAnimation.Presets.easeInEaseOut);
+                      setCreateStep(3);
+                    }}
+                    accessibilityRole="button"
+                    accessibilityLabel="Continuar"
+                    style={({ pressed }) => [
+                      styles.floatingPrimaryBtn,
+                      pressed && styles.pressedOpacity,
+                    ]}>
+                    <Text style={styles.floatingPrimaryBtnText}>Continuar</Text>
+                  </Pressable>
+                </View>
+              )}
+
+              {createType === 'deck' && folders.length > 0 && createStep === 3 && (
+                <View style={styles.floatingStepBlock}>
+                  <Text style={styles.floatingStepPrompt}>Escolha um ícone para o deck</Text>
+                  <View style={styles.floatingIconGridCard}>
+                    {(['scales', 'book', 'bank', 'graduation', 'language', 'car'] as const).map(
+                      (iconKey) => {
+                        const isSel = newDeckIcon === iconKey;
                         return (
                           <Pressable
                             key={iconKey}
-                            onPress={() => setNewFolderIcon(iconKey)}
+                            onPress={() => setNewDeckIcon(iconKey)}
                             accessibilityRole="button"
                             accessibilityLabel={`Ícone ${iconKey}`}
                             style={[
-                              styles.insetIconPill,
-                              isSel && styles.insetIconPillSelected,
+                              styles.floatingIconPill,
+                              isSel && styles.floatingIconPillSelected,
                             ]}>
-                            <FolderIcon type={iconKey} size={22} onAccent={isSel} />
+                            <DeckIcon type={iconKey} size={22} onAccent={isSel} />
                           </Pressable>
                         );
-                      })}
-                    </View>
-                    <Text style={styles.insetSectionFooter}>
-                      O ícone escolhido será exibido no cartão principal da pasta.
-                    </Text>
+                      }
+                    )}
                   </View>
+                  <Text style={styles.floatingStepHelper}>
+                    Ícone temático exibido no cartão do deck.
+                  </Text>
 
-                  <View style={styles.insetSectionGroup}>
-                    <View style={styles.insetCard}>
-                      <Pressable
-                        onPress={handleCreateFolder}
-                        disabled={!newFolderName.trim()}
-                        accessibilityRole="button"
-                        accessibilityLabel="Criar Pasta"
-                        style={({ pressed }) => [
-                          styles.insetActionRow,
-                          !newFolderName.trim() && styles.insetActionRowDisabled,
-                          pressed && styles.pressedOpacity,
-                        ]}>
-                        <Text
-                          style={[
-                            styles.insetActionText,
-                            !newFolderName.trim() && styles.insetActionTextDisabled,
-                          ]}>
-                          Criar Pasta
-                        </Text>
-                      </Pressable>
-                    </View>
-                  </View>
-                </>
-              ) : (
-                /* Content when creating Deck */
-                <>
-                  {folders.length === 0 ? (
-                    <View style={styles.insetSectionGroup}>
-                      <Text style={styles.insetSectionHeader}>PASTA NECESSÁRIA</Text>
-                      <View style={styles.insetCard}>
-                        <View style={styles.insetWarningContent}>
-                          <Text style={styles.insetWarningText}>
-                            Para criar um deck, você precisa ter ao menos uma pasta criada.
-                          </Text>
-                          <Pressable
-                            onPress={() => setCreateType('folder')}
-                            accessibilityRole="button"
-                            accessibilityLabel="Criar pasta agora"
-                            style={styles.insetWarningAction}>
-                            <Text style={styles.insetWarningActionText}>Criar pasta agora</Text>
-                            <ChevronRight16Regular size={16} color={DesignTokens.colors.accentPrimary} />
-                          </Pressable>
-                        </View>
-                      </View>
-                    </View>
-                  ) : (
-                    <>
-                      <View style={styles.insetSectionGroup}>
-                        <Text style={styles.insetSectionHeader}>INFORMAÇÕES DO DECK</Text>
-                        <View style={styles.insetCard}>
-                          <TextInput
-                            value={newDeckTitle}
-                            onChangeText={setNewDeckTitle}
-                            placeholder="Título do deck (ex: Direito Penal...)"
-                            placeholderTextColor="#707070"
-                            style={styles.insetTextInput}
-                            autoFocus
-                          />
-                        </View>
-                        <Text style={styles.insetSectionFooter}>
-                          O deck armazenará seus flashcards e revisões diárias.
-                        </Text>
-                      </View>
-
-                      <View style={styles.insetSectionGroup}>
-                        <Text style={styles.insetSectionHeader}>PASTA DE DESTINO</Text>
-                        <View style={styles.insetCard}>
-                          {folders.map((folder, idx) => {
-                            const isSel = (selectedParentFolderId || folders[0]?.id) === folder.id;
-                            return (
-                              <React.Fragment key={folder.id}>
-                                {idx > 0 && <View style={styles.insetDivider} />}
-                                <Pressable
-                                  onPress={() => setSelectedParentFolderId(folder.id)}
-                                  accessibilityRole="button"
-                                  accessibilityLabel={`Selecionar pasta ${folder.name}`}
-                                  style={({ pressed }) => [
-                                    styles.insetRow,
-                                    pressed && styles.insetRowPressed,
-                                  ]}>
-                                  <View style={styles.insetRowLeft}>
-                                    <FolderIcon type={folder.icon} size={18} />
-                                    <Text style={styles.insetRowLabel}>{folder.name}</Text>
-                                  </View>
-                                  {isSel && (
-                                    <Checkmark12Filled size={16} color={DesignTokens.colors.accentPrimary} />
-                                  )}
-                                </Pressable>
-                              </React.Fragment>
-                            );
-                          })}
-                        </View>
-                        <Text style={styles.insetSectionFooter}>
-                          Selecione em qual pasta este deck será adicionado.
-                        </Text>
-                      </View>
-
-                      <View style={styles.insetSectionGroup}>
-                        <Text style={styles.insetSectionHeader}>ÍCONE DO DECK</Text>
-                        <View style={[styles.insetCard, styles.iconPickerCard]}>
-                          {(['scales', 'book', 'bank', 'graduation', 'language', 'car'] as const).map(
-                            (iconKey) => {
-                              const isSel = newDeckIcon === iconKey;
-                              return (
-                                <Pressable
-                                  key={iconKey}
-                                  onPress={() => setNewDeckIcon(iconKey)}
-                                  accessibilityRole="button"
-                                  accessibilityLabel={`Ícone ${iconKey}`}
-                                  style={[
-                                    styles.insetIconPill,
-                                    isSel && styles.insetIconPillSelected,
-                                  ]}>
-                                  <DeckIcon type={iconKey} size={22} onAccent={isSel} />
-                                </Pressable>
-                              );
-                            }
-                          )}
-                        </View>
-                        <Text style={styles.insetSectionFooter}>
-                          Ícone temático exibido no cartão do deck.
-                        </Text>
-                      </View>
-
-                      <View style={styles.insetSectionGroup}>
-                        <View style={styles.insetCard}>
-                          <Pressable
-                            onPress={handleCreateDeck}
-                            disabled={!newDeckTitle.trim()}
-                            accessibilityRole="button"
-                            accessibilityLabel="Criar Deck"
-                            style={({ pressed }) => [
-                              styles.insetActionRow,
-                              !newDeckTitle.trim() && styles.insetActionRowDisabled,
-                              pressed && styles.pressedOpacity,
-                            ]}>
-                            <Text
-                              style={[
-                                styles.insetActionText,
-                                !newDeckTitle.trim() && styles.insetActionTextDisabled,
-                              ]}>
-                              Criar Deck
-                            </Text>
-                          </Pressable>
-                        </View>
-                      </View>
-                    </>
-                  )}
-                </>
+                  <Pressable
+                    onPress={handleCreateDeck}
+                    accessibilityRole="button"
+                    accessibilityLabel="Criar Deck"
+                    style={({ pressed }) => [
+                      styles.floatingPrimaryBtn,
+                      pressed && styles.pressedOpacity,
+                    ]}>
+                    <Text style={styles.floatingPrimaryBtnText}>Criar Deck</Text>
+                  </Pressable>
+                </View>
               )}
             </ScrollView>
           </View>
@@ -1588,70 +1698,71 @@ const styles = StyleSheet.create({
     color: DesignTokens.colors.textSecondary,
   },
 
-  /* Inset Grouped Creation Modal (Fluent 2 Mobile Style) */
-  modalBackdrop: {
+  /* Progressive Floating Card Modal (Fluent 2 Dark Style) */
+  floatingModalBackdrop: {
     flex: 1,
-    backgroundColor: 'rgba(0, 0, 0, 0.72)',
-    justifyContent: 'flex-end',
+    backgroundColor: 'rgba(0, 0, 0, 0.75)',
+    justifyContent: 'center',
+    alignItems: 'center',
+    paddingHorizontal: 20,
+    paddingVertical: 24,
   },
-  modalDismissArea: {
-    height: 48,
-  },
-  modalSheetCard: {
-    flex: 1,
-    backgroundColor: '#141414',
-    borderTopLeftRadius: 16,
-    borderTopRightRadius: 16,
+  floatingCardContainer: {
+    width: '100%',
+    maxWidth: 400,
+    maxHeight: '85%',
+    backgroundColor: '#1E1E1E',
+    borderRadius: 24,
     overflow: 'hidden',
+    shadowColor: '#000000',
+    shadowOffset: { width: 0, height: 16 },
+    shadowOpacity: 0.5,
+    shadowRadius: 28,
+    elevation: 20,
   },
-  modalSheetHeader: {
-    height: 52,
+  floatingCardHeader: {
+    height: 54,
     backgroundColor: '#1E1E1E',
     flexDirection: 'row',
     alignItems: 'center',
     justifyContent: 'space-between',
     paddingHorizontal: 16,
   },
-  modalHeaderBtn: {
-    minWidth: 60,
+  floatingHeaderBtn: {
+    minWidth: 64,
     justifyContent: 'center',
   },
-  modalHeaderBtnRight: {
-    alignItems: 'flex-end',
-  },
-  modalHeaderBtnText: {
-    fontFamily: DesignTokens.typography.fontFamily.regular,
+  floatingHeaderBtnText: {
+    fontFamily: DesignTokens.typography.fontFamily.medium,
     fontSize: 15,
-    color: '#9E9E9E',
+    color: DesignTokens.colors.accentPrimary,
   },
-  modalSheetTitle: {
+  floatingCardTitle: {
     fontFamily: DesignTokens.typography.fontFamily.semiBold,
     fontSize: 16,
     color: DesignTokens.colors.textPrimary,
     textAlign: 'center',
-  },
-  modalHeaderActionText: {
-    fontFamily: DesignTokens.typography.fontFamily.semiBold,
-    fontSize: 15,
-    color: DesignTokens.colors.accentPrimary,
-  },
-  modalHeaderActionTextDisabled: {
-    color: '#555555',
-  },
-  modalSheetBody: {
     flex: 1,
-    backgroundColor: '#141414',
   },
-  modalSheetScrollContent: {
-    paddingTop: 8,
+  floatingCloseBtn: {
+    minWidth: 40,
+    alignItems: 'flex-end',
+    justifyContent: 'center',
+  },
+  floatingCardBody: {
+    backgroundColor: '#1E1E1E',
+  },
+  floatingCardContent: {
+    paddingHorizontal: 16,
+    paddingBottom: 20,
   },
   accountContextRow: {
     flexDirection: 'row',
     alignItems: 'center',
     gap: 10,
-    paddingHorizontal: 28,
-    paddingTop: 14,
-    paddingBottom: 16,
+    paddingHorizontal: 12,
+    paddingTop: 4,
+    paddingBottom: 14,
   },
   accountContextAvatar: {
     width: 22,
@@ -1671,114 +1782,144 @@ const styles = StyleSheet.create({
     fontSize: 13,
     color: '#9E9E9E',
   },
-  insetSectionGroup: {
-    marginBottom: 16,
+  floatingStepBlock: {
+    marginTop: 4,
   },
-  insetSectionHeader: {
-    fontFamily: DesignTokens.typography.fontFamily.medium,
-    fontSize: 12,
-    color: '#9E9E9E',
-    paddingHorizontal: 28,
-    marginBottom: 6,
-    letterSpacing: 0.2,
+  floatingStepPrompt: {
+    fontFamily: DesignTokens.typography.fontFamily.semiBold,
+    fontSize: 14,
+    color: DesignTokens.colors.textPrimary,
+    marginBottom: 10,
+    paddingHorizontal: 4,
   },
-  insetCard: {
-    marginHorizontal: 16,
-    backgroundColor: '#262626',
-    borderRadius: 12,
-    overflow: 'hidden',
-  },
-  insetSectionFooter: {
+  floatingStepHelper: {
     fontFamily: DesignTokens.typography.fontFamily.regular,
     fontSize: 12,
     lineHeight: 16,
-    color: '#9E9E9E',
-    paddingHorizontal: 28,
-    marginTop: 6,
+    color: DesignTokens.colors.textSecondary,
+    marginTop: 8,
+    paddingHorizontal: 4,
   },
-  insetRow: {
-    height: 50,
+  floatingOptionsCard: {
+    backgroundColor: '#262626',
+    borderRadius: 14,
+    overflow: 'hidden',
+  },
+  floatingOptionRow: {
+    height: 64,
     paddingHorizontal: 16,
     flexDirection: 'row',
     alignItems: 'center',
     justifyContent: 'space-between',
   },
-  insetRowPressed: {
+  floatingOptionRowPressed: {
     backgroundColor: '#303030',
   },
-  insetRowLeft: {
+  floatingOptionLeft: {
     flexDirection: 'row',
     alignItems: 'center',
     gap: 12,
+    flex: 1,
   },
-  insetRowLabel: {
-    fontFamily: DesignTokens.typography.fontFamily.regular,
+  floatingOptionIconCircle: {
+    width: 38,
+    height: 38,
+    borderRadius: 10,
+    backgroundColor: '#1C1C1E',
+    alignItems: 'center',
+    justifyContent: 'center',
+  },
+  floatingOptionTextCol: {
+    flex: 1,
+  },
+  floatingOptionTitle: {
+    fontFamily: DesignTokens.typography.fontFamily.semiBold,
     fontSize: 15,
     color: '#FFFFFF',
   },
-  insetDivider: {
+  floatingOptionDesc: {
+    fontFamily: DesignTokens.typography.fontFamily.regular,
+    fontSize: 12,
+    color: DesignTokens.colors.textSecondary,
+    marginTop: 2,
+  },
+  floatingDivider: {
     height: StyleSheet.hairlineWidth,
     backgroundColor: '#333333',
-    marginLeft: 48,
+    marginLeft: 54,
   },
-  insetTextInput: {
-    height: 50,
+  floatingInputCard: {
+    backgroundColor: '#262626',
+    borderRadius: 12,
+    overflow: 'hidden',
+  },
+  floatingTextInput: {
+    height: 52,
     paddingHorizontal: 16,
     fontFamily: DesignTokens.typography.fontFamily.regular,
     fontSize: 15,
     color: '#FFFFFF',
   },
-  iconPickerCard: {
+  floatingIconGridCard: {
+    backgroundColor: '#262626',
+    borderRadius: 14,
+    padding: 12,
     flexDirection: 'row',
     flexWrap: 'wrap',
     gap: 10,
-    padding: 12,
+    justifyContent: 'center',
   },
-  insetIconPill: {
-    width: 48,
-    height: 48,
+  floatingIconPill: {
+    width: 52,
+    height: 52,
     borderRadius: 12,
     backgroundColor: '#1E1E1E',
     alignItems: 'center',
     justifyContent: 'center',
   },
-  insetIconPillSelected: {
+  floatingIconPillSelected: {
     backgroundColor: DesignTokens.colors.accentPrimary,
   },
-  insetActionRow: {
-    height: 50,
+  floatingFolderListCard: {
+    backgroundColor: '#262626',
+    borderRadius: 14,
+    overflow: 'hidden',
+  },
+  floatingFolderRow: {
+    height: 52,
+    paddingHorizontal: 16,
+    flexDirection: 'row',
     alignItems: 'center',
-    justifyContent: 'center',
+    justifyContent: 'space-between',
   },
-  insetActionRowDisabled: {
-    opacity: 0.5,
-  },
-  insetActionText: {
-    fontFamily: DesignTokens.typography.fontFamily.semiBold,
-    fontSize: 15,
-    color: DesignTokens.colors.accentPrimary,
-  },
-  insetActionTextDisabled: {
-    color: '#707070',
-  },
-  insetWarningContent: {
+  floatingWarningCard: {
+    backgroundColor: '#262626',
+    borderRadius: 12,
     padding: 16,
-    gap: 12,
   },
-  insetWarningText: {
+  floatingWarningText: {
     fontFamily: DesignTokens.typography.fontFamily.regular,
     fontSize: 14,
     lineHeight: 20,
     color: '#9E9E9E',
   },
-  insetWarningAction: {
-    flexDirection: 'row',
+  floatingPrimaryBtn: {
+    height: 48,
+    borderRadius: DesignTokens.radius.pill,
+    backgroundColor: DesignTokens.colors.accentPrimary,
     alignItems: 'center',
-    gap: 6,
+    justifyContent: 'center',
+    marginTop: 18,
   },
-  insetWarningActionText: {
+  floatingPrimaryBtnDisabled: {
+    opacity: 0.4,
+  },
+  floatingPrimaryBtnText: {
     fontFamily: DesignTokens.typography.fontFamily.semiBold,
-    fontSize: 14,
-    color: DesignTokens.colors.accentPrimary,
+    fontSize: 15,
+    color: DesignTokens.colors.textOnAccent,
+  },
+  floatingPrimaryBtnTextDisabled: {
+    color: DesignTokens.colors.textOnAccent,
   },
 });
