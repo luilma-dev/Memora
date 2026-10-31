@@ -25,6 +25,7 @@ import {
   ChevronRight16Regular,
   Dismiss24Regular,
   Folder24Regular,
+  FolderAdd24Filled,
   HatGraduation24Filled,
   History24Regular,
   Home24Regular,
@@ -484,9 +485,21 @@ export default function StudyHomeScreen() {
         {/* Empty State: Zero folders & zero decks */}
         {folders.length === 0 ? (
           <View style={styles.emptyStateContainer}>
-            <View style={styles.emptyStateIconContainer}>
-              <Folder24Regular size={48} color={DesignTokens.colors.textSecondary} />
-            </View>
+            <Pressable
+              onPress={() => {
+                setCreateType('folder');
+                setIsCreateModalOpen(true);
+              }}
+              accessibilityRole="button"
+              accessibilityLabel="Criar primeira pasta"
+              style={({ pressed }) => [
+                styles.emptyStateIconOuter,
+                pressed && styles.pressedOpacity,
+              ]}>
+              <View style={styles.emptyStateIconInner}>
+                <FolderAdd24Filled size={36} color={DesignTokens.colors.accentPrimary} />
+              </View>
+            </Pressable>
             <Text style={styles.emptyStateTitle}>Nenhuma pasta ainda</Text>
             <Text style={styles.emptyStateSubtitle}>
               Crie sua primeira pasta para organizar seus estudos e decks de flashcards.
@@ -1524,14 +1537,22 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     justifyContent: 'center',
   },
-  emptyStateIconContainer: {
-    width: 88,
-    height: 88,
-    borderRadius: 24,
-    backgroundColor: '#1B1B1B',
+  emptyStateIconOuter: {
+    width: 96,
+    height: 96,
+    borderRadius: 30,
+    backgroundColor: '#181818',
     alignItems: 'center',
     justifyContent: 'center',
     marginBottom: 20,
+  },
+  emptyStateIconInner: {
+    width: 64,
+    height: 64,
+    borderRadius: 20,
+    backgroundColor: 'rgba(71, 158, 245, 0.12)',
+    alignItems: 'center',
+    justifyContent: 'center',
   },
   emptyStateTitle: {
     fontFamily: DesignTokens.typography.fontFamily.semiBold,

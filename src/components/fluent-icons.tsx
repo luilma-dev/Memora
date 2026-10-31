@@ -275,6 +275,37 @@ export function Folder24Regular({ size = 24, color = '#9E9E9E' }: FluentIconProp
   );
 }
 
+export function Folder24Filled({ size = 24, color = '#479EF5' }: FluentIconProps) {
+  return (
+    <Svg width={size} height={size} viewBox="0 0 24 24" fill="none">
+      <Path
+        d="M4.75 4C3.78 4 3 4.78 3 5.75v11.5c0 .97.78 1.75 1.75 1.75h12.5c.97 0 1.75-.78 1.75-1.75V8.32c0-.97-.78-1.75-1.75-1.75h-4.28c-.46 0-.91-.18-1.24-.51L10.19 4.51c-.33-.33-.78-.51-1.24-.51H4.75Z"
+        fill={color}
+      />
+    </Svg>
+  );
+}
+
+export function FolderAdd24Filled({
+  size = 24,
+  color = '#479EF5',
+  badgeColor,
+}: FluentIconProps & { badgeColor?: string }) {
+  const badgeFill = badgeColor ?? color;
+  return (
+    <Svg width={size} height={size} viewBox="0 0 24 24" fill="none">
+      <Path
+        d="M4.75 4C3.78 4 3 4.78 3 5.75v11.5c0 .97.78 1.75 1.75 1.75h6.33a6.5 6.5 0 0 1-.08-1.5H4.75a.25.25 0 0 1-.25-.25V8.07h12.5c.14 0 .25.11.25.25v2.85c.53.15 1.04.38 1.5.68V8.32c0-.97-.78-1.75-1.75-1.75h-4.28c-.46 0-.91-.18-1.24-.51L9.94 4.51c-.33-.33-.78-.51-1.24-.51H4.75Z"
+        fill={color}
+      />
+      <Path
+        d="M17.5 12a5.5 5.5 0 1 1 0 11 5.5 5.5 0 0 1 0-11Zm0 2a.5.5 0 0 0-.5.5V17h-2.5a.5.5 0 0 0 0 1H17v2.5a.5.5 0 0 0 1 0V18h2.5a.5.5 0 0 0 0-1H18v-2.5a.5.5 0 0 0-.5-.5Z"
+        fill={badgeFill}
+      />
+    </Svg>
+  );
+}
+
 export function AddCircle24Regular({ size = 24, color = '#9E9E9E' }: FluentIconProps) {
   return (
     <Svg width={size} height={size} viewBox="0 0 24 24" fill="none">
