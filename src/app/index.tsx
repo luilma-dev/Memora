@@ -59,7 +59,8 @@ interface StudyFolder {
   decks: StudyDeck[];
 }
 
-const FOLDERS: StudyFolder[] = [
+// eslint-disable-next-line @typescript-eslint/no-unused-vars
+const INITIAL_FOLDERS_MOCK: StudyFolder[] = [
   {
     id: 'prf',
     name: 'PRF',
@@ -234,7 +235,8 @@ export default function StudyHomeScreen() {
   const [isSearchOpen, setIsSearchOpen] = useState(false);
   const [searchQuery, setSearchQuery] = useState('');
   const [selectedFolderId, setSelectedFolderId] = useState<string | null>(null);
-  const [isTransitioning, setIsTransitioning] = useState(false);
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars
+  const [isTransitioning, _setIsTransitioning] = useState(false);
 
   // Creation modal state (Progressive Floating Card)
   const [isCreateModalOpen, setIsCreateModalOpen] = useState(false);
