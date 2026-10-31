@@ -907,7 +907,7 @@ export default function StudyHomeScreen() {
                     style={({ pressed }) => [
                       styles.floatingPrimaryBtn,
                       !newFolderName.trim() && styles.floatingPrimaryBtnDisabled,
-                      pressed && styles.pressedOpacity,
+                      pressed && newFolderName.trim().length > 0 && styles.pressedOpacity,
                     ]}>
                     <Text
                       style={[
@@ -1012,7 +1012,7 @@ export default function StudyHomeScreen() {
                     style={({ pressed }) => [
                       styles.floatingPrimaryBtn,
                       !newDeckTitle.trim() && styles.floatingPrimaryBtnDisabled,
-                      pressed && styles.pressedOpacity,
+                      pressed && newDeckTitle.trim().length > 0 && styles.pressedOpacity,
                     ]}>
                     <Text
                       style={[
@@ -1822,7 +1822,7 @@ const styles = StyleSheet.create({
     marginTop: 18,
   },
   floatingPrimaryBtnDisabled: {
-    opacity: 0.4,
+    backgroundColor: '#262626',
   },
   floatingPrimaryBtnText: {
     fontFamily: DesignTokens.typography.fontFamily.semiBold,
@@ -1830,6 +1830,6 @@ const styles = StyleSheet.create({
     color: DesignTokens.colors.textOnAccent,
   },
   floatingPrimaryBtnTextDisabled: {
-    color: DesignTokens.colors.textOnAccent,
+    color: '#707070',
   },
 });
