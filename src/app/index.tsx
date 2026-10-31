@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useRef, useState } from 'react';
 import {
   Animated,
   Easing,
@@ -248,6 +248,8 @@ export default function StudyHomeScreen() {
   const [newDeckTitle, setNewDeckTitle] = useState('');
   const [newDeckIcon, setNewDeckIcon] = useState<StudyDeck['icon']>('scales');
   const [selectedParentFolderId, setSelectedParentFolderId] = useState<string>('');
+  const [selectingOption, setSelectingOption] = useState<'folder' | 'deck' | null>(null);
+  const optionScaleAnim = useRef(new Animated.Value(1)).current;
 
   // Animated values
   const [decksHeaderAnim] = useState(() => new Animated.Value(0));
@@ -326,8 +328,34 @@ export default function StudyHomeScreen() {
     LayoutAnimation.configureNext(LayoutAnimation.Presets.easeInEaseOut);
     setIsCreateModalOpen(false);
     setCreateStep(0);
+    setSelectingOption(null);
     setNewFolderName('');
     setNewDeckTitle('');
+  };
+
+  const handleSelectOption = (type: 'folder' | 'deck') => {
+    if (selectingOption) return;
+    setSelectingOption(type);
+    Animated.sequence([
+      Animated.timing(optionScaleAnim, {
+        toValue: 0.96,
+        duration: 70,
+        useNativeDriver: USE_NATIVE_DRIVER,
+      }),
+      Animated.spring(optionScaleAnim, {
+        toValue: 1,
+        friction: 4,
+        tension: 120,
+        useNativeDriver: USE_NATIVE_DRIVER,
+      }),
+    ]).start();
+
+    setTimeout(() => {
+      LayoutAnimation.configureNext(LayoutAnimation.Presets.easeInEaseOut);
+      setCreateType(type);
+      setCreateStep(1);
+      setSelectingOption(null);
+    }, 160);
   };
 
   const handleBackStep = () => {
@@ -832,43 +860,65 @@ export default function StudyHomeScreen() {
                 <View style={styles.floatingStepBlock}>
                   <View style={styles.floatingOptionsCard}>
                     <Pressable
-                      onPress={() => {
-                        LayoutAnimation.configureNext(LayoutAnimation.Presets.easeInEaseOut);
-                        setCreateType('folder');
-                        setCreateStep(1);
-                      }}
+                      onPress={() => handleSelectOption('folder')}
                       accessibilityRole="button"
-                      accessibilityLabel="Nova Pasta"
-                      style={({ pressed }) => [
-                        styles.floatingOptionRow,
-                        pressed && styles.floatingOptionRowPressed,
-                      ]}>
-                      <View style={styles.floatingOptionLeft}>
-                        <Folder24Regular size={28} color={DesignTokens.colors.accentPrimary} />
-                        <Text style={styles.floatingOptionTitle}>Nova Pasta</Text>
-                      </View>
-                      <ChevronRight16Regular size={20} color={DesignTokens.colors.accentPrimary} />
+                      accessibilityLabel="Nova Pasta">
+                      {({ pressed }) => {
+                        const isActive = pressed || selectingOption === 'folder';
+                        const optionColor = isActive ? DesignTokens.colors.accentPrimary : '#9E9E9E';
+                        const chevronColor = isActive ? DesignTokens.colors.accentPrimary : '#666666';
+
+                        return (
+                          <Animated.View
+                            style={[
+                              styles.floatingOptionRow,
+                              isActive && styles.floatingOptionRowPressed,
+                              selectingOption === 'folder' && {
+                                transform: [{ scale: optionScaleAnim }],
+                              },
+                            ]}>
+                            <View style={styles.floatingOptionLeft}>
+                              <Folder24Regular size={28} color={optionColor} />
+                              <Text style={[styles.floatingOptionTitle, { color: optionColor }]}>
+                                Nova Pasta
+                              </Text>
+                            </View>
+                            <ChevronRight16Regular size={20} color={chevronColor} />
+                          </Animated.View>
+                        );
+                      }}
                     </Pressable>
 
                     <View style={styles.floatingDivider} />
 
                     <Pressable
-                      onPress={() => {
-                        LayoutAnimation.configureNext(LayoutAnimation.Presets.easeInEaseOut);
-                        setCreateType('deck');
-                        setCreateStep(1);
-                      }}
+                      onPress={() => handleSelectOption('deck')}
                       accessibilityRole="button"
-                      accessibilityLabel="Novo Deck"
-                      style={({ pressed }) => [
-                        styles.floatingOptionRow,
-                        pressed && styles.floatingOptionRowPressed,
-                      ]}>
-                      <View style={styles.floatingOptionLeft}>
-                        <BookOpen24Regular size={28} color={DesignTokens.colors.accentPrimary} />
-                        <Text style={styles.floatingOptionTitle}>Novo Deck</Text>
-                      </View>
-                      <ChevronRight16Regular size={20} color={DesignTokens.colors.accentPrimary} />
+                      accessibilityLabel="Novo Deck">
+                      {({ pressed }) => {
+                        const isActive = pressed || selectingOption === 'deck';
+                        const optionColor = isActive ? DesignTokens.colors.accentPrimary : '#9E9E9E';
+                        const chevronColor = isActive ? DesignTokens.colors.accentPrimary : '#666666';
+
+                        return (
+                          <Animated.View
+                            style={[
+                              styles.floatingOptionRow,
+                              isActive && styles.floatingOptionRowPressed,
+                              selectingOption === 'deck' && {
+                                transform: [{ scale: optionScaleAnim }],
+                              },
+                            ]}>
+                            <View style={styles.floatingOptionLeft}>
+                              <BookOpen24Regular size={28} color={optionColor} />
+                              <Text style={[styles.floatingOptionTitle, { color: optionColor }]}>
+                                Novo Deck
+                              </Text>
+                            </View>
+                            <ChevronRight16Regular size={20} color={chevronColor} />
+                          </Animated.View>
+                        );
+                      }}
                     </Pressable>
                   </View>
                 </View>
@@ -1736,7 +1786,7 @@ const styles = StyleSheet.create({
     justifyContent: 'space-between',
   },
   floatingOptionRowPressed: {
-    backgroundColor: '#242428',
+    backgroundColor: 'rgba(71, 158, 245, 0.12)',
   },
   floatingOptionLeft: {
     flexDirection: 'row',
@@ -1746,7 +1796,7 @@ const styles = StyleSheet.create({
   floatingOptionTitle: {
     fontFamily: DesignTokens.typography.fontFamily.semiBold,
     fontSize: 20,
-    color: '#479EF5',
+    color: '#9E9E9E',
   },
   floatingDivider: {
     height: StyleSheet.hairlineWidth,
