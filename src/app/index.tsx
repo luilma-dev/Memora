@@ -417,9 +417,9 @@ export default function StudyHomeScreen() {
   const [createStep, setCreateStep] = useState<number>(0);
   const [createType, setCreateType] = useState<'folder' | 'deck'>('folder');
   const [newFolderName, setNewFolderName] = useState('');
-  const [newFolderIcon, setNewFolderIcon] = useState<StudyFolder['icon']>('shield');
+  const [newFolderIcon, setNewFolderIcon] = useState<StudyIconKey | null>(null);
   const [newDeckTitle, setNewDeckTitle] = useState('');
-  const [newDeckIcon, setNewDeckIcon] = useState<StudyDeck['icon']>('scales');
+  const [newDeckIcon, setNewDeckIcon] = useState<StudyIconKey | null>(null);
   const [selectedParentFolderId, setSelectedParentFolderId] = useState<string>('');
   const [selectingOption, setSelectingOption] = useState<'folder' | 'deck' | null>(null);
   const [iconPopAnim] = useState(() => new Animated.Value(1));
@@ -507,7 +507,9 @@ export default function StudyHomeScreen() {
     setCreateStep(0);
     setSelectingOption(null);
     setNewFolderName('');
+    setNewFolderIcon(null);
     setNewDeckTitle('');
+    setNewDeckIcon(null);
   };
 
   const handleSelectOption = (type: 'folder' | 'deck') => {
@@ -619,7 +621,7 @@ export default function StudyHomeScreen() {
   };
 
   const handleCreateFolder = () => {
-    if (!newFolderName.trim()) return;
+    if (!newFolderName.trim() || !newFolderIcon) return;
     LayoutAnimation.configureNext(LayoutAnimation.Presets.easeInEaseOut);
     const newFolder: StudyFolder = {
       id: `folder-${Date.now()}`,
@@ -632,12 +634,13 @@ export default function StudyHomeScreen() {
     };
     setFolders((prev) => [newFolder, ...prev]);
     setNewFolderName('');
+    setNewFolderIcon(null);
     setCreateStep(0);
     setIsCreateModalOpen(false);
   };
 
   const handleCreateDeck = () => {
-    if (!newDeckTitle.trim()) return;
+    if (!newDeckTitle.trim() || !newDeckIcon) return;
     const targetFolderId = selectedParentFolderId || folders[0]?.id;
     if (!targetFolderId) return;
 
@@ -664,6 +667,7 @@ export default function StudyHomeScreen() {
       })
     );
     setNewDeckTitle('');
+    setNewDeckIcon(null);
     setCreateStep(0);
     setIsCreateModalOpen(false);
   };
@@ -1240,7 +1244,7 @@ export default function StudyHomeScreen() {
               {createType === 'folder' && createStep === 2 && (
                 <View style={styles.floatingStepBlock}>
                   <View style={styles.floatingIconGridCard}>
-                    {(['shield', 'graduation', 'language', 'book'] as const).map((iconKey) => {
+                    {(['shield', 'graduation', 'language'] as const).map((iconKey) => {
                       const isSel = newFolderIcon === iconKey;
                       return (
                         <Pressable
@@ -1257,37 +1261,33 @@ export default function StudyHomeScreen() {
                       );
                     })}
 
-                    {!['shield', 'graduation', 'language', 'book'].includes(newFolderIcon) && (
+                    {newFolderIcon && !['shield', 'graduation', 'language'].includes(newFolderIcon) ? (
                       <Pressable
-                        style={[styles.floatingIconPill, styles.floatingIconPillSelected]}
+                        onPress={() => setIsIconSheetOpen(true)}
                         accessibilityRole="button"
-                        accessibilityLabel={`Ícone selecionado ${newFolderIcon}`}>
+                        accessibilityLabel={`Ícone selecionado ${newFolderIcon}. Toque para alterar.`}
+                        style={[styles.floatingIconPill, styles.floatingIconPillSelected]}>
                         <FolderIcon type={newFolderIcon} size={26} onAccent />
                       </Pressable>
+                    ) : (
+                      <Pressable
+                        onPress={() => setIsIconSheetOpen(true)}
+                        accessibilityRole="button"
+                        accessibilityLabel="Mais ícones"
+                        style={({ pressed }) => [
+                          styles.floatingIconPillAdd,
+                          pressed && styles.pressedOpacity,
+                        ]}>
+                        <Add24Regular size={24} color="#479EF5" />
+                      </Pressable>
                     )}
-
-                    <Pressable
-                      onPress={() => setIsIconSheetOpen(true)}
-                      accessibilityRole="button"
-                      accessibilityLabel="Mais ícones"
-                      style={({ pressed }) => [
-                        styles.floatingIconPillAdd,
-                        pressed && styles.pressedOpacity,
-                      ]}>
-                      <Add24Regular size={24} color="#479EF5" />
-                    </Pressable>
                   </View>
 
-                  <Pressable
+                  <FloatingContinueButton
+                    isActive={!!newFolderIcon}
                     onPress={handleCreateFolder}
-                    accessibilityRole="button"
-                    accessibilityLabel="Criar Pasta"
-                    style={({ pressed }) => [
-                      styles.floatingPrimaryBtn,
-                      pressed && styles.pressedOpacity,
-                    ]}>
-                    <Text style={styles.floatingPrimaryBtnText}>Criar Pasta</Text>
-                  </Pressable>
+                    label="Criar Pasta"
+                  />
                 </View>
               )}
 
@@ -1406,7 +1406,7 @@ export default function StudyHomeScreen() {
               {createType === 'deck' && folders.length > 0 && createStep === 3 && (
                 <View style={styles.floatingStepBlock}>
                   <View style={styles.floatingIconGridCard}>
-                    {(['scales', 'book', 'bank', 'graduation'] as const).map((iconKey) => {
+                    {(['scales', 'car', 'bank'] as const).map((iconKey) => {
                       const isSel = newDeckIcon === iconKey;
                       return (
                         <Pressable
@@ -1423,37 +1423,33 @@ export default function StudyHomeScreen() {
                       );
                     })}
 
-                    {!['scales', 'book', 'bank', 'graduation'].includes(newDeckIcon) && (
+                    {newDeckIcon && !['scales', 'car', 'bank'].includes(newDeckIcon) ? (
                       <Pressable
-                        style={[styles.floatingIconPill, styles.floatingIconPillSelected]}
+                        onPress={() => setIsIconSheetOpen(true)}
                         accessibilityRole="button"
-                        accessibilityLabel={`Ícone selecionado ${newDeckIcon}`}>
+                        accessibilityLabel={`Ícone selecionado ${newDeckIcon}. Toque para alterar.`}
+                        style={[styles.floatingIconPill, styles.floatingIconPillSelected]}>
                         <DeckIcon type={newDeckIcon} size={26} onAccent />
                       </Pressable>
+                    ) : (
+                      <Pressable
+                        onPress={() => setIsIconSheetOpen(true)}
+                        accessibilityRole="button"
+                        accessibilityLabel="Mais ícones"
+                        style={({ pressed }) => [
+                          styles.floatingIconPillAdd,
+                          pressed && styles.pressedOpacity,
+                        ]}>
+                        <Add24Regular size={24} color="#479EF5" />
+                      </Pressable>
                     )}
-
-                    <Pressable
-                      onPress={() => setIsIconSheetOpen(true)}
-                      accessibilityRole="button"
-                      accessibilityLabel="Mais ícones"
-                      style={({ pressed }) => [
-                        styles.floatingIconPillAdd,
-                        pressed && styles.pressedOpacity,
-                      ]}>
-                      <Add24Regular size={24} color="#479EF5" />
-                    </Pressable>
                   </View>
 
-                  <Pressable
+                  <FloatingContinueButton
+                    isActive={!!newDeckIcon}
                     onPress={handleCreateDeck}
-                    accessibilityRole="button"
-                    accessibilityLabel="Criar Deck"
-                    style={({ pressed }) => [
-                      styles.floatingPrimaryBtn,
-                      pressed && styles.pressedOpacity,
-                    ]}>
-                    <Text style={styles.floatingPrimaryBtnText}>Criar Deck</Text>
-                  </Pressable>
+                    label="Criar Deck"
+                  />
                 </View>
               )}
             </ScrollView>
@@ -2185,9 +2181,10 @@ const styles = StyleSheet.create({
     padding: 20,
     width: '100%',
     flexDirection: 'row',
-    flexWrap: 'wrap',
+    flexWrap: 'nowrap',
     gap: 12,
     justifyContent: 'center',
+    alignItems: 'center',
   },
   floatingIconPill: {
     width: 58,
