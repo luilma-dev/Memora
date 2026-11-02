@@ -354,6 +354,127 @@ export function FolderTabShoulder({
   );
 }
 
+export function Star24Filled({ size = 24, color = '#FFFFFF' }: FluentIconProps) {
+  return (
+    <Svg width={size} height={size} viewBox="0 0 24 24" fill="none">
+      <Path
+        d="M12 2L14.9 8.8L22.2 9.4L16.7 14.2L18.3 21.4L12 17.6L5.7 21.4L7.3 14.2L1.8 9.4L9.1 8.8L12 2Z"
+        fill={color}
+      />
+    </Svg>
+  );
+}
+
+export function Heart24Filled({ size = 24, color = '#FFFFFF' }: FluentIconProps) {
+  return (
+    <Svg width={size} height={size} viewBox="0 0 24 24" fill="none">
+      <Path
+        d="M12 21.35L10.55 20.03C5.4 15.36 2 12.28 2 8.5C2 5.42 4.42 3 7.5 3C9.24 3 10.91 3.81 12 5.09C13.09 3.81 14.76 3 16.5 3C19.58 3 22 5.42 22 8.5C22 12.28 18.6 15.36 13.45 20.04L12 21.35Z"
+        fill={color}
+      />
+    </Svg>
+  );
+}
+
+export function Trophy24Filled({ size = 24, color = '#FFFFFF' }: FluentIconProps) {
+  return (
+    <Svg width={size} height={size} viewBox="0 0 24 24" fill="none">
+      <Path
+        d="M19 4H17V3C17 2.45 16.55 2 16 2H8C7.45 2 7 2.45 7 3V4H5C3.34 4 2 5.34 2 7V9C2 11.21 3.79 13 6 13C6.34 13 6.67 12.96 7 12.88V14C7 16.21 8.79 18 11 18V20H8C7.45 20 7 20.45 7 21C7 21.55 7.45 22 8 22H16C16.55 22 17 21.55 17 21C17 20.45 16.55 20 16 20H13V18C15.21 18 17 16.21 17 14V12.88C17.33 12.96 17.66 13 18 13C20.21 13 22 11.21 22 9V7C22 5.34 20.66 4 19 4ZM4 9V7C4 6.45 4.45 6 5 6H7V10.83C5.28 10.42 4 9.87 4 9ZM20 9C20 9.87 18.72 10.42 17 10.83V6H19C19.55 6 20 6.45 20 7V9Z"
+        fill={color}
+      />
+    </Svg>
+  );
+}
+
+export function Flame24Filled({ size = 24, color = '#FFFFFF' }: FluentIconProps) {
+  return (
+    <Svg width={size} height={size} viewBox="0 0 24 24" fill="none">
+      <Path
+        d="M12 2C12.5 3.5 12 5 11 6.5C10 8 9 9 9 10.5C9 12.16 10.34 13.5 12 13.5C13.66 13.5 15 12.16 15 10.5C15 8.5 13.5 7 13.5 5.5C15.5 6.5 18 9 18 12.5C18 16.92 14.42 20.5 10 20.5C5.58 20.5 2 16.92 2 12.5C2 8.5 5 5 12 2Z"
+        fill={color}
+      />
+    </Svg>
+  );
+}
+
+export function Globe24Filled({ size = 24, color = '#FFFFFF' }: FluentIconProps) {
+  return (
+    <Svg width={size} height={size} viewBox="0 0 24 24" fill="none">
+      <Path
+        d="M12 2C6.48 2 2 6.48 2 12C2 17.52 6.48 22 12 22C17.52 22 22 17.52 22 12C22 6.48 17.52 2 12 2ZM11 19.93C7.05 19.44 4 16.08 4 12C4 11.38 4.08 10.79 4.21 10.21L9 15V16C9 17.1 9.9 18 11 18V19.93ZM17.9 17.39C17.38 18.43 16.57 19.29 15.57 19.87V17C15.57 15.9 14.67 15 13.57 15H11V13H13C14.1 13 15 12.1 15 11V10C15 9.45 15.45 9 16 9C16.55 9 17 9.45 17 10V12C17 13.1 17.9 14 19 14C19.39 14 19.74 13.88 20.03 13.69C19.78 15.14 18.99 16.42 17.9 17.39Z"
+        fill={color}
+      />
+    </Svg>
+  );
+}
+
+export function Briefcase24Filled({ size = 24, color = '#FFFFFF' }: FluentIconProps) {
+  return (
+    <Svg width={size} height={size} viewBox="0 0 24 24" fill="none">
+      <Path
+        d="M20 6H16V4C16 2.9 15.1 2 14 2H10C8.9 2 8 2.9 8 4V6H4C2.9 6 2 6.9 2 8V19C2 20.1 2.9 21 4 21H20C21.1 21 22 20.1 22 19V8C22 6.9 21.1 6 20 6ZM10 4H14V6H10V4ZM20 19H4V8H20V19Z"
+        fill={color}
+      />
+    </Svg>
+  );
+}
+
+export function Code24Filled({ size = 24, color = '#FFFFFF' }: FluentIconProps) {
+  return (
+    <Svg width={size} height={size} viewBox="0 0 24 24" fill="none">
+      <Path
+        d="M8.7 15.3L7.3 16.7L2.6 12L7.3 7.3L8.7 8.7L5.4 12L8.7 15.3ZM15.3 15.3L18.6 12L15.3 8.7L16.7 7.3L21.4 12L16.7 16.7L15.3 15.3ZM13.5 4L9.5 20H7.7L11.7 4H13.5Z"
+        fill={color}
+      />
+    </Svg>
+  );
+}
+
+export function Music24Filled({ size = 24, color = '#FFFFFF' }: FluentIconProps) {
+  return (
+    <Svg width={size} height={size} viewBox="0 0 24 24" fill="none">
+      <Path
+        d="M12 3V13.55C11.41 13.21 10.73 13 10 13C7.79 13 6 14.79 6 17C6 19.21 7.79 21 10 21C12.21 21 14 19.21 14 17V7H18V3H12Z"
+        fill={color}
+      />
+    </Svg>
+  );
+}
+
+export function Lightbulb24Filled({ size = 24, color = '#FFFFFF' }: FluentIconProps) {
+  return (
+    <Svg width={size} height={size} viewBox="0 0 24 24" fill="none">
+      <Path
+        d="M12 2C8.13 2 5 5.13 5 9C5 11.38 6.19 13.47 8 14.74V17C8 17.55 8.45 18 9 18H15C15.55 18 16 17.55 16 17V14.74C17.81 13.47 19 11.38 19 9C19 5.13 15.87 2 12 2ZM9 20C9 20.55 9.45 21 10 21H14C14.55 21 15 20.55 15 20V19H9V20Z"
+        fill={color}
+      />
+    </Svg>
+  );
+}
+
+export function Brain24Filled({ size = 24, color = '#FFFFFF' }: FluentIconProps) {
+  return (
+    <Svg width={size} height={size} viewBox="0 0 24 24" fill="none">
+      <Path
+        d="M12 3C10.2 3 8.7 3.9 7.8 5.3C6.4 5.7 5.3 7 5.1 8.5C3.3 9.4 2.1 11.3 2.1 13.5C2.1 16.5 4.5 19 7.5 19H8V21H10V3H12ZM14 3V21H16V19H16.5C19.5 19 21.9 16.5 21.9 13.5C21.9 11.3 20.7 9.4 18.9 8.5C18.7 7 17.6 5.7 16.2 5.3C15.3 3.9 13.8 3 12 3H14Z"
+        fill={color}
+      />
+    </Svg>
+  );
+}
+
+export function Medical24Filled({ size = 24, color = '#FFFFFF' }: FluentIconProps) {
+  return (
+    <Svg width={size} height={size} viewBox="0 0 24 24" fill="none">
+      <Path
+        d="M19 3H5C3.9 3 3 3.9 3 5V19C3 20.1 3.9 21 5 21H19C20.1 21 21 20.1 21 19V5C21 3.9 20.1 3 19 3ZM16 13H13V16C13 16.55 12.55 17 12 17C11.45 17 11 16.55 11 16V13H8C7.45 13 7 12.55 7 12C7 11.45 7.45 11 8 11H11V8C11 7.45 11.45 7 12 7C12.55 7 13 7.45 13 8V11H16C16.55 11 17 11.45 17 12C17 12.55 16.55 13 16 13Z"
+        fill={color}
+      />
+    </Svg>
+  );
+}
+
 
 
 

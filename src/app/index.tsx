@@ -21,33 +21,93 @@ import {
   ArrowRight16Regular,
   BookOpen24Filled,
   BookOpen24Regular,
+  Brain24Filled,
+  Briefcase24Filled,
   BuildingBank24Filled,
   Checkmark12Filled,
   ChevronRight16Regular,
+  Code24Filled,
+  Dismiss24Regular,
+  Flame24Filled,
   Folder24Regular,
   FolderAdd24Filled,
+  Globe24Filled,
   HatGraduation24Filled,
+  Heart24Filled,
   History24Regular,
+  Home24Filled,
   Home24Regular,
   Library24Regular,
+  Lightbulb24Filled,
   LocalLanguage24Filled,
+  Medical24Filled,
   Mic20Regular,
+  Music24Filled,
   Scales24Filled,
   Search20Regular,
   Search24Regular,
   Shield24Filled,
+  Star24Filled,
+  Trophy24Filled,
   VehicleCar24Filled,
 } from '@/components/fluent-icons';
 import { DesignTokens } from '@/constants/design-tokens';
 
 const USE_NATIVE_DRIVER = Platform.OS !== 'web';
 
+export type StudyIconKey =
+  | 'shield'
+  | 'graduation'
+  | 'language'
+  | 'book'
+  | 'scales'
+  | 'car'
+  | 'bank'
+  | 'home'
+  | 'history'
+  | 'library'
+  | 'star'
+  | 'trophy'
+  | 'flame'
+  | 'globe'
+  | 'briefcase'
+  | 'code'
+  | 'music'
+  | 'lightbulb'
+  | 'brain'
+  | 'medical'
+  | 'heart';
+
+const ALL_STUDY_ICONS: StudyIconKey[] = [
+  'shield',
+  'graduation',
+  'language',
+  'book',
+  'scales',
+  'car',
+  'bank',
+  'home',
+  'history',
+  'library',
+  'star',
+  'trophy',
+  'flame',
+  'globe',
+  'briefcase',
+  'code',
+  'music',
+  'lightbulb',
+  'brain',
+  'medical',
+  'heart',
+];
+
 interface StudyDeck {
   id: string;
   title: string;
   flashcardCount: number;
   masteryPercent: number;
-  icon: 'scales' | 'car' | 'book' | 'bank' | 'graduation' | 'language';
+  icon: StudyIconKey;
 }
 
 interface StudyFolder {
@@ -56,7 +116,7 @@ interface StudyFolder {
   deckCount: number;
   totalCards: number;
   masteryPercent: number;
-  icon: 'shield' | 'graduation' | 'language' | 'book';
+  icon: StudyIconKey;
   decks: StudyDeck[];
 }
 
@@ -174,13 +234,13 @@ const INITIAL_FOLDERS_MOCK: StudyFolder[] = [
   },
 ];
 
-function FolderIcon({
+function UniversalStudyIcon({
   type,
   size = 26,
   onAccent = false,
   color,
 }: {
-  type: StudyFolder['icon'];
+  type: StudyIconKey;
   size?: number;
   onAccent?: boolean;
   color?: string;
@@ -195,35 +255,61 @@ function FolderIcon({
       return <LocalLanguage24Filled size={size} color={iconColor} />;
     case 'book':
       return <BookOpen24Filled size={size} color={iconColor} />;
+    case 'scales':
+      return <Scales24Filled size={size} color={iconColor} />;
+    case 'car':
+      return <VehicleCar24Filled size={size} color={iconColor} />;
+    case 'bank':
+      return <BuildingBank24Filled size={size} color={iconColor} />;
+    case 'home':
+      return <Home24Filled size={size} color={iconColor} />;
+    case 'history':
+      return <History24Regular size={size} color={iconColor} />;
+    case 'library':
+      return <Library24Regular size={size} color={iconColor} />;
+    case 'star':
+      return <Star24Filled size={size} color={iconColor} />;
+    case 'trophy':
+      return <Trophy24Filled size={size} color={iconColor} />;
+    case 'flame':
+      return <Flame24Filled size={size} color={iconColor} />;
+    case 'globe':
+      return <Globe24Filled size={size} color={iconColor} />;
+    case 'briefcase':
+      return <Briefcase24Filled size={size} color={iconColor} />;
+    case 'code':
+      return <Code24Filled size={size} color={iconColor} />;
+    case 'music':
+      return <Music24Filled size={size} color={iconColor} />;
+    case 'lightbulb':
+      return <Lightbulb24Filled size={size} color={iconColor} />;
+    case 'brain':
+      return <Brain24Filled size={size} color={iconColor} />;
+    case 'medical':
+      return <Medical24Filled size={size} color={iconColor} />;
+    case 'heart':
+      return <Heart24Filled size={size} color={iconColor} />;
+    default:
+      return <BookOpen24Filled size={size} color={iconColor} />;
   }
 }
 
-function DeckIcon({
-  type,
-  size = 26,
-  onAccent = false,
-  color,
-}: {
+function FolderIcon(props: {
+  type: StudyFolder['icon'];
+  size?: number;
+  onAccent?: boolean;
+  color?: string;
+}) {
+  return <UniversalStudyIcon {...props} />;
+}
+
+function DeckIcon(props: {
   type: StudyDeck['icon'];
   size?: number;
   onAccent?: boolean;
   color?: string;
 }) {
-  const iconColor = color ?? (onAccent ? '#FFFFFF' : '#F2F2F2');
-  switch (type) {
-    case 'scales':
-      return <Scales24Filled size={size} color={iconColor} />;
-    case 'car':
-      return <VehicleCar24Filled size={size} color={iconColor} />;
-    case 'book':
-      return <BookOpen24Filled size={size} color={iconColor} />;
-    case 'bank':
-      return <BuildingBank24Filled size={size} color={iconColor} />;
-    case 'graduation':
-      return <HatGraduation24Filled size={size} color={iconColor} />;
-    case 'language':
-      return <LocalLanguage24Filled size={size} color={iconColor} />;
-  }
+  return <UniversalStudyIcon {...props} />;
 }
 
 function FloatingContinueButton({
@@ -327,6 +413,7 @@ export default function StudyHomeScreen() {
 
   // Creation modal state (Progressive Floating Card)
   const [isCreateModalOpen, setIsCreateModalOpen] = useState(false);
+  const [isIconSheetOpen, setIsIconSheetOpen] = useState(false);
   const [createStep, setCreateStep] = useState<number>(0);
   const [createType, setCreateType] = useState<'folder' | 'deck'>('folder');
   const [newFolderName, setNewFolderName] = useState('');
@@ -416,6 +503,7 @@ export default function StudyHomeScreen() {
   const handleCloseCreate = () => {
     LayoutAnimation.configureNext(LayoutAnimation.Presets.easeInEaseOut);
     setIsCreateModalOpen(false);
+    setIsIconSheetOpen(false);
     setCreateStep(0);
     setSelectingOption(null);
     setNewFolderName('');
@@ -1164,10 +1252,30 @@ export default function StudyHomeScreen() {
                             styles.floatingIconPill,
                             isSel && styles.floatingIconPillSelected,
                           ]}>
-                          <FolderIcon type={iconKey} size={24} onAccent={isSel} />
+                          <FolderIcon type={iconKey} size={26} onAccent={isSel} />
                         </Pressable>
                       );
                     })}
+
+                    {!['shield', 'graduation', 'language', 'book'].includes(newFolderIcon) && (
+                      <Pressable
+                        style={[styles.floatingIconPill, styles.floatingIconPillSelected]}
+                        accessibilityRole="button"
+                        accessibilityLabel={`Ícone selecionado ${newFolderIcon}`}>
+                        <FolderIcon type={newFolderIcon} size={26} onAccent />
+                      </Pressable>
+                    )}
+
+                    <Pressable
+                      onPress={() => setIsIconSheetOpen(true)}
+                      accessibilityRole="button"
+                      accessibilityLabel="Mais ícones"
+                      style={({ pressed }) => [
+                        styles.floatingIconPillAdd,
+                        pressed && styles.pressedOpacity,
+                      ]}>
+                      <Add24Regular size={24} color="#479EF5" />
+                    </Pressable>
                   </View>
 
                   <Pressable
@@ -1298,24 +1406,42 @@ export default function StudyHomeScreen() {
               {createType === 'deck' && folders.length > 0 && createStep === 3 && (
                 <View style={styles.floatingStepBlock}>
                   <View style={styles.floatingIconGridCard}>
-                    {(['scales', 'book', 'bank', 'graduation', 'language', 'car'] as const).map(
-                      (iconKey) => {
-                        const isSel = newDeckIcon === iconKey;
-                        return (
-                          <Pressable
-                            key={iconKey}
-                            onPress={() => setNewDeckIcon(iconKey)}
-                            accessibilityRole="button"
-                            accessibilityLabel={`Ícone ${iconKey}`}
-                            style={[
-                              styles.floatingIconPill,
-                              isSel && styles.floatingIconPillSelected,
-                            ]}>
-                            <DeckIcon type={iconKey} size={22} onAccent={isSel} />
-                          </Pressable>
-                        );
-                      }
+                    {(['scales', 'book', 'bank', 'graduation'] as const).map((iconKey) => {
+                      const isSel = newDeckIcon === iconKey;
+                      return (
+                        <Pressable
+                          key={iconKey}
+                          onPress={() => setNewDeckIcon(iconKey)}
+                          accessibilityRole="button"
+                          accessibilityLabel={`Ícone ${iconKey}`}
+                          style={[
+                            styles.floatingIconPill,
+                            isSel && styles.floatingIconPillSelected,
+                          ]}>
+                          <DeckIcon type={iconKey} size={26} onAccent={isSel} />
+                        </Pressable>
+                      );
+                    })}
+
+                    {!['scales', 'book', 'bank', 'graduation'].includes(newDeckIcon) && (
+                      <Pressable
+                        style={[styles.floatingIconPill, styles.floatingIconPillSelected]}
+                        accessibilityRole="button"
+                        accessibilityLabel={`Ícone selecionado ${newDeckIcon}`}>
+                        <DeckIcon type={newDeckIcon} size={26} onAccent />
+                      </Pressable>
                     )}
+
+                    <Pressable
+                      onPress={() => setIsIconSheetOpen(true)}
+                      accessibilityRole="button"
+                      accessibilityLabel="Mais ícones"
+                      style={({ pressed }) => [
+                        styles.floatingIconPillAdd,
+                        pressed && styles.pressedOpacity,
+                      ]}>
+                      <Add24Regular size={24} color="#479EF5" />
+                    </Pressable>
                   </View>
 
                   <Pressable
@@ -1333,6 +1459,69 @@ export default function StudyHomeScreen() {
             </ScrollView>
           </View>
         </KeyboardAvoidingView>
+      </Modal>
+
+      {/* Floating Icon Picker Sheet (Aba Flutuante) */}
+      <Modal
+        visible={isIconSheetOpen}
+        transparent
+        animationType="fade"
+        onRequestClose={() => setIsIconSheetOpen(false)}>
+        <Pressable
+          style={styles.iconSheetBackdrop}
+          onPress={() => setIsIconSheetOpen(false)}>
+          <Pressable
+            style={styles.iconSheetCard}
+            onPress={(e) => e.stopPropagation()}>
+            <View style={styles.iconSheetHeader}>
+              <Text style={styles.iconSheetTitle}>Escolher Ícone</Text>
+              <Pressable
+                onPress={() => setIsIconSheetOpen(false)}
+                hitSlop={8}
+                accessibilityRole="button"
+                accessibilityLabel="Fechar seleção de ícones"
+                style={styles.iconSheetCloseBtn}>
+                <Dismiss24Regular size={20} color="#9E9E9E" />
+              </Pressable>
+            </View>
+            <ScrollView
+              style={styles.iconSheetGrid}
+              contentContainerStyle={styles.iconSheetGridContent}
+              showsVerticalScrollIndicator={false}>
+              {ALL_STUDY_ICONS.map((iconKey) => {
+                const isSelected =
+                  createType === 'folder'
+                    ? newFolderIcon === iconKey
+                    : newDeckIcon === iconKey;
+                return (
+                  <Pressable
+                    key={iconKey}
+                    onPress={() => {
+                      if (createType === 'folder') {
+                        setNewFolderIcon(iconKey);
+                      } else {
+                        setNewDeckIcon(iconKey);
+                      }
+                      setIsIconSheetOpen(false);
+                    }}
+                    accessibilityRole="button"
+                    accessibilityLabel={`Ícone ${iconKey}`}
+                    style={({ pressed }) => [
+                      styles.iconSheetPill,
+                      isSelected && styles.iconSheetPillSelected,
+                      pressed && styles.pressedOpacity,
+                    ]}>
+                    <UniversalStudyIcon
+                      type={iconKey}
+                      size={26}
+                      onAccent={isSelected}
+                    />
+                  </Pressable>
+                );
+              })}
+            </ScrollView>
+          </Pressable>
+        </Pressable>
       </Modal>
 
       {/* Bottom Tab Bar (#1D1D1D surface) */}
@@ -2009,6 +2198,83 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
   },
   floatingIconPillSelected: {
+    backgroundColor: DesignTokens.colors.accentPrimary,
+  },
+  floatingIconPillAdd: {
+    width: 58,
+    height: 58,
+    borderRadius: 14,
+    backgroundColor: '#1E1E24',
+    borderWidth: 1.5,
+    borderStyle: 'dashed',
+    borderColor: '#479EF5',
+    alignItems: 'center',
+    justifyContent: 'center',
+  },
+  iconSheetBackdrop: {
+    flex: 1,
+    backgroundColor: 'rgba(0, 0, 0, 0.78)',
+    justifyContent: 'center',
+    alignItems: 'center',
+    paddingHorizontal: 16,
+  },
+  iconSheetCard: {
+    width: '92%',
+    maxWidth: 420,
+    maxHeight: 440,
+    backgroundColor: '#171717',
+    borderRadius: 28,
+    borderWidth: 1,
+    borderColor: '#26262A',
+    overflow: 'hidden',
+    shadowColor: '#000000',
+    shadowOffset: { width: 0, height: 16 },
+    shadowOpacity: 0.6,
+    shadowRadius: 24,
+    elevation: 24,
+  },
+  iconSheetHeader: {
+    height: 58,
+    backgroundColor: '#202024',
+    flexDirection: 'row',
+    alignItems: 'center',
+    justifyContent: 'space-between',
+    paddingHorizontal: 20,
+    borderBottomWidth: StyleSheet.hairlineWidth,
+    borderBottomColor: '#26262A',
+  },
+  iconSheetTitle: {
+    fontFamily: DesignTokens.typography.fontFamily.bold,
+    fontSize: 18,
+    color: '#FFFFFF',
+  },
+  iconSheetCloseBtn: {
+    width: 36,
+    height: 36,
+    borderRadius: 18,
+    backgroundColor: '#171717',
+    alignItems: 'center',
+    justifyContent: 'center',
+  },
+  iconSheetGrid: {
+    padding: 16,
+  },
+  iconSheetGridContent: {
+    flexDirection: 'row',
+    flexWrap: 'wrap',
+    gap: 12,
+    justifyContent: 'center',
+    paddingBottom: 20,
+  },
+  iconSheetPill: {
+    width: 56,
+    height: 56,
+    borderRadius: 14,
+    backgroundColor: '#121212',
+    alignItems: 'center',
+    justifyContent: 'center',
+  },
+  iconSheetPillSelected: {
     backgroundColor: DesignTokens.colors.accentPrimary,
   },
   floatingFolderListCard: {
