@@ -1044,7 +1044,7 @@ export default function StudyHomeScreen() {
                       value={newFolderName}
                       onChangeText={setNewFolderName}
                       placeholder="Nome da pasta"
-                      placeholderTextColor="#323232"
+                      placeholderTextColor="#5A5A62"
                       style={styles.floatingTextInput}
                       autoFocus
                       returnKeyType="next"
@@ -1161,7 +1161,7 @@ export default function StudyHomeScreen() {
                       value={newDeckTitle}
                       onChangeText={setNewDeckTitle}
                       placeholder="Título do deck"
-                      placeholderTextColor="#323232"
+                      placeholderTextColor="#5A5A62"
                       style={styles.floatingTextInput}
                       autoFocus
                       returnKeyType="next"
@@ -1841,11 +1841,11 @@ const styles = StyleSheet.create({
     paddingVertical: 24,
   },
   floatingCardContainer: {
-    width: '92%',
-    maxWidth: 390,
-    maxHeight: '85%',
+    width: '94%',
+    maxWidth: 440,
+    maxHeight: '88%',
     backgroundColor: '#121212',
-    borderRadius: 28,
+    borderRadius: 32,
     overflow: 'hidden',
     shadowColor: '#000000',
     shadowOffset: { width: 0, height: 16 },
@@ -1855,31 +1855,31 @@ const styles = StyleSheet.create({
     marginBottom: 50,
   },
   floatingCardHeader: {
-    height: 60,
+    height: 70,
     backgroundColor: '#262629',
     flexDirection: 'row',
     alignItems: 'center',
     justifyContent: 'space-between',
-    paddingHorizontal: 18,
+    paddingHorizontal: 22,
   },
   floatingHeaderBtn: {
-    minWidth: 70,
+    minWidth: 80,
     justifyContent: 'center',
   },
   floatingHeaderBtnText: {
     fontFamily: DesignTokens.typography.fontFamily.medium,
-    fontSize: 17,
+    fontSize: 18,
     color: '#479EF5',
   },
   floatingCardTitle: {
     fontFamily: DesignTokens.typography.fontFamily.bold,
-    fontSize: 18,
+    fontSize: 20,
     color: '#FFFFFF',
     textAlign: 'center',
     flex: 1,
   },
   floatingHeaderSpacer: {
-    minWidth: 70,
+    minWidth: 80,
   },
   floatingCardBody: {
     backgroundColor: '#121212',
@@ -1897,12 +1897,12 @@ const styles = StyleSheet.create({
     backgroundColor: '#171717',
     width: '100%',
     overflow: 'hidden',
-    borderBottomLeftRadius: 28,
-    borderBottomRightRadius: 28,
+    borderBottomLeftRadius: 32,
+    borderBottomRightRadius: 32,
   },
   floatingOptionRow: {
-    height: 70,
-    paddingHorizontal: 22,
+    height: 76,
+    paddingHorizontal: 24,
     flexDirection: 'row',
     alignItems: 'center',
     justifyContent: 'space-between',
@@ -1917,43 +1917,43 @@ const styles = StyleSheet.create({
   },
   floatingOptionTitle: {
     fontFamily: DesignTokens.typography.fontFamily.semiBold,
-    fontSize: 20,
+    fontSize: 21,
     color: '#9E9E9E',
   },
   floatingDivider: {
     height: StyleSheet.hairlineWidth,
     backgroundColor: '#26262A',
-    marginLeft: 66,
+    marginLeft: 70,
   },
   floatingInputCard: {
     width: '100%',
-    height: 58,
+    height: 74,
     backgroundColor: '#171717',
     justifyContent: 'center',
-    paddingHorizontal: 20,
+    paddingHorizontal: 24,
   },
   floatingTextInput: {
-    height: 58,
+    height: 74,
     fontFamily: DesignTokens.typography.fontFamily.medium,
-    fontSize: 18,
-    letterSpacing: -0.72,
+    fontSize: 21,
+    letterSpacing: -0.8,
     color: '#FFFFFF',
     paddingHorizontal: 0,
     ...(Platform.OS === 'web' ? ({ outlineStyle: 'none' } as any) : {}),
   },
   floatingIconGridCard: {
     backgroundColor: '#171717',
-    padding: 16,
+    padding: 20,
     width: '100%',
     flexDirection: 'row',
     flexWrap: 'wrap',
-    gap: 10,
+    gap: 12,
     justifyContent: 'center',
   },
   floatingIconPill: {
-    width: 52,
-    height: 52,
-    borderRadius: 12,
+    width: 58,
+    height: 58,
+    borderRadius: 14,
     backgroundColor: '#121212',
     alignItems: 'center',
     justifyContent: 'center',
@@ -1967,8 +1967,8 @@ const styles = StyleSheet.create({
     overflow: 'hidden',
   },
   floatingFolderRow: {
-    height: 52,
-    paddingHorizontal: 20,
+    height: 60,
+    paddingHorizontal: 24,
     flexDirection: 'row',
     alignItems: 'center',
     justifyContent: 'space-between',
@@ -1987,28 +1987,28 @@ const styles = StyleSheet.create({
     color: '#9E9E9E',
   },
   floatingPrimaryBtn: {
-    height: 52,
+    height: 64,
     borderRadius: DesignTokens.radius.pill,
     backgroundColor: DesignTokens.colors.accentPrimary,
     alignItems: 'center',
     justifyContent: 'center',
-    marginHorizontal: 18,
-    marginTop: 18,
-    marginBottom: 16,
+    marginHorizontal: 22,
+    marginTop: 22,
+    marginBottom: 20,
   },
   floatingPrimaryBtnDisabled: {
     backgroundColor: '#1A1A1A',
   },
   floatingPrimaryBtnText: {
     fontFamily: DesignTokens.typography.fontFamily.bold,
-    fontSize: 17,
+    fontSize: 19,
     letterSpacing: 0,
     color: DesignTokens.colors.textOnAccent,
   },
   floatingPrimaryBtnTextDisabled: {
     color: '#666666',
     fontFamily: DesignTokens.typography.fontFamily.bold,
-    fontSize: 17,
+    fontSize: 19,
     letterSpacing: 0,
   },
 });
