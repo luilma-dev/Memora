@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import {
   Animated,
   Easing,
@@ -224,6 +224,92 @@ function DeckIcon({
     case 'language':
       return <LocalLanguage24Filled size={size} color={iconColor} />;
   }
+}
+
+function FloatingContinueButton({
+  isActive,
+  onPress,
+  label = 'Continuar',
+}: {
+  isActive: boolean;
+  onPress: () => void;
+  label?: string;
+}) {
+  const [activeAnim] = useState(() => new Animated.Value(isActive ? 1 : 0));
+  const [scaleAnim] = useState(() => new Animated.Value(1));
+
+  useEffect(() => {
+    if (isActive) {
+      Animated.parallel([
+        Animated.timing(activeAnim, {
+          toValue: 1,
+          duration: 220,
+          easing: Easing.out(Easing.cubic),
+          useNativeDriver: USE_NATIVE_DRIVER,
+        }),
+        Animated.sequence([
+          Animated.timing(scaleAnim, {
+            toValue: 1.04,
+            duration: 110,
+            easing: Easing.out(Easing.ease),
+            useNativeDriver: USE_NATIVE_DRIVER,
+          }),
+          Animated.spring(scaleAnim, {
+            toValue: 1,
+            friction: 4,
+            tension: 130,
+            useNativeDriver: USE_NATIVE_DRIVER,
+          }),
+        ]),
+      ]).start();
+    } else {
+      Animated.parallel([
+        Animated.timing(activeAnim, {
+          toValue: 0,
+          duration: 170,
+          easing: Easing.in(Easing.cubic),
+          useNativeDriver: USE_NATIVE_DRIVER,
+        }),
+        Animated.spring(scaleAnim, {
+          toValue: 1,
+          friction: 5,
+          tension: 100,
+          useNativeDriver: USE_NATIVE_DRIVER,
+        }),
+      ]).start();
+    }
+  }, [isActive, activeAnim, scaleAnim]);
+
+  return (
+    <Animated.View style={{ transform: [{ scale: scaleAnim }] }}>
+      <Pressable
+        onPress={() => {
+          if (isActive) {
+            onPress();
+          }
+        }}
+        disabled={!isActive}
+        accessibilityRole="button"
+        accessibilityLabel={label}
+        style={({ pressed }) => [
+          styles.floatingPrimaryBtnBase,
+          pressed && isActive && styles.pressedOpacity,
+        ]}>
+        <Text style={[styles.floatingPrimaryBtnText, styles.floatingPrimaryBtnTextDisabled]}>
+          {label}
+        </Text>
+        <Animated.View
+          pointerEvents="none"
+          style={[
+            StyleSheet.absoluteFill,
+            styles.floatingPrimaryBtnActiveOverlay,
+            { opacity: activeAnim },
+          ]}>
+          <Text style={styles.floatingPrimaryBtnText}>{label}</Text>
+        </Animated.View>
+      </Pressable>
+    </Animated.View>
+  );
 }
 
 export default function StudyHomeScreen() {
@@ -1056,28 +1142,10 @@ export default function StudyHomeScreen() {
                     />
                   </View>
 
-                  <Pressable
-                    onPress={() => {
-                      if (newFolderName.trim()) {
-                        handleAdvanceToStep(2);
-                      }
-                    }}
-                    disabled={!newFolderName.trim()}
-                    accessibilityRole="button"
-                    accessibilityLabel="Continuar"
-                    style={({ pressed }) => [
-                      styles.floatingPrimaryBtn,
-                      !newFolderName.trim() && styles.floatingPrimaryBtnDisabled,
-                      pressed && newFolderName.trim().length > 0 && styles.pressedOpacity,
-                    ]}>
-                    <Text
-                      style={[
-                        styles.floatingPrimaryBtnText,
-                        !newFolderName.trim() && styles.floatingPrimaryBtnTextDisabled,
-                      ]}>
-                      Continuar
-                    </Text>
-                  </Pressable>
+                  <FloatingContinueButton
+                    isActive={!!newFolderName.trim()}
+                    onPress={() => handleAdvanceToStep(2)}
+                  />
                 </Animated.View>
               )}
 
@@ -1173,28 +1241,10 @@ export default function StudyHomeScreen() {
                     />
                   </View>
 
-                  <Pressable
-                    onPress={() => {
-                      if (newDeckTitle.trim()) {
-                        handleAdvanceToStep(2);
-                      }
-                    }}
-                    disabled={!newDeckTitle.trim()}
-                    accessibilityRole="button"
-                    accessibilityLabel="Continuar"
-                    style={({ pressed }) => [
-                      styles.floatingPrimaryBtn,
-                      !newDeckTitle.trim() && styles.floatingPrimaryBtnDisabled,
-                      pressed && newDeckTitle.trim().length > 0 && styles.pressedOpacity,
-                    ]}>
-                    <Text
-                      style={[
-                        styles.floatingPrimaryBtnText,
-                        !newDeckTitle.trim() && styles.floatingPrimaryBtnTextDisabled,
-                      ]}>
-                      Continuar
-                    </Text>
-                  </Pressable>
+                  <FloatingContinueButton
+                    isActive={!!newDeckTitle.trim()}
+                    onPress={() => handleAdvanceToStep(2)}
+                  />
                 </Animated.View>
               )}
 
@@ -1985,6 +2035,24 @@ const styles = StyleSheet.create({
     fontSize: 14,
     lineHeight: 20,
     color: '#9E9E9E',
+  },
+  floatingPrimaryBtnBase: {
+    height: 64,
+    borderRadius: DesignTokens.radius.pill,
+    backgroundColor: '#1A1A1A',
+    alignItems: 'center',
+    justifyContent: 'center',
+    marginHorizontal: 22,
+    marginTop: 22,
+    marginBottom: 20,
+    overflow: 'hidden',
+    position: 'relative',
+  },
+  floatingPrimaryBtnActiveOverlay: {
+    backgroundColor: DesignTokens.colors.accentPrimary,
+    borderRadius: DesignTokens.radius.pill,
+    alignItems: 'center',
+    justifyContent: 'center',
   },
   floatingPrimaryBtn: {
     height: 64,
